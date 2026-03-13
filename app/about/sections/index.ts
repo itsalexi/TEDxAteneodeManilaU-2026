@@ -1,0 +1,8 @@
+export { default as AboutTedxAteneoSection } from "./AboutTedxAteneoSection";
+export { default as GetInvolvedSection } from "./GetInvolvedSection";
+export { default as LandingSection } from "./LandingSection";
+export { default as LegacySection } from "./LegacySection";
+export { default as MissionVisionSection } from "./MissionVisionSection";
+export { default as PastMomentsSection } from "./PastMomentsSection";
+export { default as PastTalksSection } from "./PastTalksSection";
+export { default as SpeakerTestimonialSection } from "./SpeakerTestimonialSection";

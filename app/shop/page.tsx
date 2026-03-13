@@ -6,13 +6,18 @@
  * 
  * @route /shop
  */
+import {
+  CatalogSection,
+  LandingSection,
+  TopPicksSection,
+} from "@/app/shop/sections";
 
-import React from 'react'
-
-const ShopPage = () => {
+export default function ShopPage() {
   return (
-    <div>ShopPage</div>
-  )
+    <div className="flex min-h-screen flex-col font-sans text-tedx-white bg-black">
+      <LandingSection />
+      <TopPicksSection />
+      <CatalogSection />
+    </div>
+  );
 }
-
-export default ShopPage

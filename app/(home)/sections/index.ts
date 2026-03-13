@@ -1,0 +1,10 @@
+export { default as AgendaSection } from "./AgendaSection";
+export { default as ContactUsSection } from "./ContactUsSection";
+export { default as FaqSection } from "./FaqSection";
+export { default as LandingSection } from "./LandingSection";
+export { default as SpeakersSection } from "./SpeakersSection";
+export { default as SponsorsSection } from "./SponsorsSection";
+export { default as TalksSection } from "./TalksSection";
+export { default as VenueSection } from "./VenueSection";
+export { default as WhatIsMomentumSection } from "./WhatIsMomentumSection";
+export { default as WhatIsTedxSection } from "./WhatIsTedxSection";

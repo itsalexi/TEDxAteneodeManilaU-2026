@@ -7,11 +7,32 @@
  * 
  * @route /
  */
+import {
+  AgendaSection,
+  ContactUsSection,
+  FaqSection,
+  LandingSection,
+  SpeakersSection,
+  SponsorsSection,
+  TalksSection,
+  VenueSection,
+  WhatIsMomentumSection,
+  WhatIsTedxSection,
+} from "@/app/(home)/sections";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans text-tedx-white dark:bg-black">
-      TEDxAteneodeManilaU 2026 Website
+    <div className="flex min-h-screen flex-col font-sans text-tedx-white bg-black">
+      <LandingSection />
+      <WhatIsMomentumSection />
+      <WhatIsTedxSection />
+      <TalksSection />
+      <SpeakersSection />
+      <AgendaSection />
+      <VenueSection />
+      <SponsorsSection />
+      <FaqSection />
+      <ContactUsSection />
     </div>
   );
 }

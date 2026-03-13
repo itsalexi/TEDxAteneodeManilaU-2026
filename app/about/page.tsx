@@ -7,13 +7,28 @@
  * 
  * @route /about
  */
+import {
+  AboutTedxAteneoSection,
+  GetInvolvedSection,
+  LandingSection,
+  LegacySection,
+  MissionVisionSection,
+  PastMomentsSection,
+  PastTalksSection,
+  SpeakerTestimonialSection,
+} from "@/app/about/sections";
 
-import React from 'react'
-
-const AboutPage = () => {
+export default function AboutPage() {
   return (
-    <div>About Page</div>
-  )
+    <div className="flex min-h-screen flex-col font-sans text-tedx-white bg-black">
+      <LandingSection />
+      <AboutTedxAteneoSection />
+      <MissionVisionSection />
+      <LegacySection />
+      <PastMomentsSection />
+      <PastTalksSection />
+      <SpeakerTestimonialSection />
+      <GetInvolvedSection />
+    </div>
+  );
 }
-
-export default AboutPage

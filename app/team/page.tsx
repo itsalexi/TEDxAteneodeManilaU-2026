@@ -6,13 +6,22 @@
  * 
  * @route /team
  */
+import {
+  DepartmentsSection,
+  GetInTouchSection,
+  LandingSection,
+  LeadersSection,
+  OrganizerSection,
+} from "@/app/team/sections";
 
-import React from 'react'
-
-const TeamPage = () => {
+export default function TeamPage() {
   return (
-    <div>TeamPage</div>
-  )
+    <div className="flex min-h-screen flex-col font-sans text-tedx-white bg-black">
+      <LandingSection />
+      <OrganizerSection />
+      <LeadersSection />
+      <DepartmentsSection />
+      <GetInTouchSection />
+    </div>
+  );
 }
-
-export default TeamPage
