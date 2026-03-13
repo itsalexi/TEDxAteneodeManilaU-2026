@@ -7,14 +7,61 @@ Visit localhost:3000/
 
 ## STRUCTURE
 app/
-  (home)/page.tsx           -> /\
-  about/page.tsx            -> /about\
-  event/page.tsx            -> /event\
-  team/page.tsx             -> /team\
-  registration/page.tsx     -> /registration\
-  shop/page.tsx             -> /shop
+  (home)/
+    page.tsx                -> /
+    sections/
+      LandingSection.tsx
+      WhatIsMomentumSection.tsx
+      WhatIsTedxSection.tsx
+      TalksSection.tsx
+      SpeakersSection.tsx
+      AgendaSection.tsx
+      VenueSection.tsx
+      SponsorsSection.tsx
+      FaqSection.tsx
+      ContactUsSection.tsx
+      index.ts              -> barrel export
 
-## COLORS - USE THESE (TENTATIVE)
+  about/
+    page.tsx                -> /about
+    sections/
+      LandingSection.tsx
+      AboutTedxAteneoSection.tsx
+      MissionVisionSection.tsx
+      LegacySection.tsx
+      PastMomentsSection.tsx
+      PastTalksSection.tsx
+      SpeakerTestimonialSection.tsx
+      GetInvolvedSection.tsx
+      index.ts              -> barrel export
+
+  team/
+    page.tsx                -> /team
+    sections/
+      LandingSection.tsx
+      OrganizerSection.tsx
+      LeadersSection.tsx
+      DepartmentsSection.tsx
+      GetInTouchSection.tsx
+      index.ts              -> barrel export
+
+  shop/
+    page.tsx                -> /shop
+    sections/
+      LandingSection.tsx
+      TopPicksSection.tsx
+      CatalogSection.tsx
+      index.ts              -> barrel export
+
+  register/page.tsx         -> /register
+  layout.tsx
+  globals.css
+
+SECTION PATTERN:
+Each page composes section components from its own sections/ folder.
+Import via barrel: import { SectionName } from "@/app/[page]/sections"
+
+## COLORS - USE THESE
 These can be found in tailwind.config.js and globals.css\
 tedx-red: #eb0028    (TEDx Red - buttons)\
 tedx-black: #000000  (Black - headings)\
@@ -22,14 +69,14 @@ tedx-gray: #f5f5f5   (Light Gray - backgrounds)\
 tedx-white: #ffffff  (White)\
 tedx-dark: #1a1a1a   (Dark Gray - text)\
 
-destructive: '#dc2626', // Error red (different from brand red!)\
+destructive: '#dc2626', // Error red\
 success: '#16a34a',     // Success green\
 warning: '#f59e0b',     // Warning yellow\
 muted: '#6b7280',       // Muted text\
 border: '#e5e7eb',      // Border gray\
 
 USE: className="bg-tedx-red text-tedx-white"\
-NEVER: className="bg-[#eb0028]"\
+DONT: className="bg-[#eb0028]"\
 
 ## TO EDIT COLORS, FONTS, SIZES, GO TO tailwind.config.js and globals.css
 
