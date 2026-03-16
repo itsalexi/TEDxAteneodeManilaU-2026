@@ -76,7 +76,7 @@ function InvolvementCta({
     return (
       <span
         aria-disabled="true"
-        className={`${sharedClassName} cursor-not-allowed bg-[#464646] px-5 text-[#8b8b8b]`}
+        className={`${sharedClassName} cursor-not-allowed bg-tedx-disabled px-5 text-tedx-disabled-text`}
       >
         {label}
       </span>
@@ -85,7 +85,7 @@ function InvolvementCta({
 
   return (
     <Link
-      className={`${sharedClassName} bg-[#d82d33] px-5 text-white hover:bg-[#c1272d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black`}
+      className={`${sharedClassName} bg-tedx-accent px-5 text-tedx-white hover:bg-tedx-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-white focus-visible:ring-offset-2 focus-visible:ring-offset-tedx-black`}
       href={href}
     >
       {label}
@@ -98,11 +98,13 @@ function InvolvementListItem({ children }: { children: string }) {
     <li className="flex items-start gap-[7px]">
       <span
         aria-hidden="true"
-        className="pt-[2px] text-[20px] font-bold leading-none text-[#d82d33]"
+        className="pt-[2px] text-[20px] font-bold leading-none text-tedx-accent"
       >
         x
       </span>
-      <span className="text-[16px] leading-[25px] text-white">{children}</span>
+      <span className="text-[16px] leading-[25px] text-tedx-white">
+        {children}
+      </span>
     </li>
   );
 }
@@ -112,15 +114,15 @@ export default function GetInvolvedSection() {
     <section
       id="get-involved"
       aria-labelledby="get-involved-heading"
-      className="bg-black px-4 py-20 text-white sm:px-6 lg:px-0 lg:py-[88px]"
+      className="bg-tedx-black px-4 py-20 text-tedx-white sm:px-6 lg:px-0 lg:py-[88px]"
     >
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center">
         <h2
           id="get-involved-heading"
-          className="font-league-gothic text-center text-[4.25rem] leading-[0.82] tracking-[-0.04em] text-white sm:text-[5.5rem] lg:text-[128px] lg:leading-none lg:tracking-[-0.04em]"
+          className="font-league-gothic text-center text-[4.25rem] leading-[0.82] tracking-[-0.04em] text-tedx-white sm:text-[5.5rem] lg:text-[128px] lg:leading-none lg:tracking-[-0.04em]"
         >
           <span className="block sm:inline">HOW TO BE </span>
-          <span className="text-[#d82d33]">INVOLVED</span>
+          <span className="text-tedx-accent">INVOLVED</span>
         </h2>
 
         <div className="mt-14 grid w-full max-w-[1398px] gap-x-8 gap-y-14 md:grid-cols-2 lg:mt-[100px] lg:grid-cols-3 lg:gap-x-[32px] lg:gap-y-[36px]">
@@ -130,13 +132,13 @@ export default function GetInvolvedSection() {
               className="mx-auto flex h-full w-full max-w-[475px] flex-col items-center lg:min-h-[471px]"
             >
               <div className="flex w-full flex-1 flex-col items-center">
-                <h3 className="text-center text-[2.2rem] font-bold leading-[0.92] tracking-[-0.04em] text-white lg:text-[36px] lg:leading-none lg:tracking-[-1.44px]">
-                  <span className="block text-[#d82d33]">{card.accent}</span>
+                <h3 className="text-center text-[2.2rem] font-bold leading-[0.92] tracking-[-0.04em] text-tedx-white lg:text-[36px] lg:leading-none lg:tracking-[-1.44px]">
+                  <span className="block text-tedx-accent">{card.accent}</span>
                   <span className="block">{card.title}</span>
                 </h3>
 
                 <div className="mt-8 w-full max-w-[358px] text-left lg:mt-[38px]">
-                  <p className="text-[16px] leading-[25px] text-white">
+                  <p className="text-[16px] leading-[25px] text-tedx-white">
                     {card.description}
                   </p>
 

@@ -47,19 +47,14 @@ const legacyColumns: Array<{
 ];
 
 const blurMasks: Record<CornerBlur, string> = {
-  "top-left":
-    "linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 32%, rgba(0,0,0,0.85) 54%, rgba(0,0,0,0) 78%)",
-  "top-right":
-    "linear-gradient(225deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 32%, rgba(0,0,0,0.85) 54%, rgba(0,0,0,0) 78%)",
-  "bottom-left":
-    "linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 32%, rgba(0,0,0,0.85) 54%, rgba(0,0,0,0) 78%)",
-  "bottom-right":
-    "linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 32%, rgba(0,0,0,0.85) 54%, rgba(0,0,0,0) 78%)",
+  "top-left": "var(--tedx-legacy-mask-top-left)",
+  "top-right": "var(--tedx-legacy-mask-top-right)",
+  "bottom-left": "var(--tedx-legacy-mask-bottom-left)",
+  "bottom-right": "var(--tedx-legacy-mask-bottom-right)",
 };
 
 const legacyXTextStyle = {
-  backgroundImage:
-    "radial-gradient(circle at center, #ef4444 0%, #d82d33 42%, #b9231b 70%, #991a04 100%)",
+  backgroundImage: "var(--tedx-legacy-x-gradient)",
   backgroundClip: "text" as const,
   WebkitBackgroundClip: "text" as const,
   WebkitTextFillColor: "transparent",
@@ -73,7 +68,7 @@ const legacyXTextStyle = {
 };
 
 const legacyXGlowStyle = {
-  color: "#d82d33",
+  color: "var(--tedx-accent-color)",
   fontFamily: "Inter, Helvetica, Arial, sans-serif",
   fontSize: "500px",
   fontStyle: "normal",
@@ -83,7 +78,7 @@ const legacyXGlowStyle = {
   filter: "blur(22px)",
   opacity: 0.88,
   textShadow:
-    "0 0 24px rgba(216, 45, 51, 0.8), 0 0 44px rgba(216, 45, 51, 0.45)",
+    "0 0 24px var(--tedx-accent-glow-shadow), 0 0 44px var(--tedx-accent-glow-shadow-soft)",
 };
 
 function CornerX({
@@ -141,7 +136,7 @@ export default function LegacySection() {
     <section
       id="legacy"
       aria-labelledby="legacy-heading"
-      className="relative z-20 isolate overflow-visible bg-black px-0 py-24 text-white sm:py-28 lg:min-h-[1130px] lg:py-[140px]"
+      className="relative z-20 isolate overflow-visible bg-tedx-black px-0 py-24 text-tedx-white sm:py-28 lg:min-h-[1130px] lg:py-[140px]"
     >
       <div className="pointer-events-none absolute inset-0 left-1/2 z-30 w-[1440px] max-w-none -translate-x-1/2">
         <CornerX
@@ -171,8 +166,8 @@ export default function LegacySection() {
           id="legacy-heading"
           className="text-center text-[3.5rem] font-bold leading-[0.95] tracking-[-0.04em] sm:text-[4.5rem] lg:text-[90px]"
         >
-          <span className="text-white">Our </span>
-          <span className="text-[#d82d33]">Legacy</span>
+          <span className="text-tedx-white">Our </span>
+          <span className="text-tedx-accent">Legacy</span>
         </h2>
 
         <div className="mt-16 grid w-full gap-14 lg:mt-[78px] lg:grid-cols-2 lg:gap-x-[72px]">
@@ -187,10 +182,10 @@ export default function LegacySection() {
                 {column.metrics.map((metric) => (
                   <article key={`${metric.accent}${metric.remainder}`} className="max-w-[466px]">
                     <h3 className="text-[2.4rem] font-bold leading-[1.02] tracking-[-0.04em] sm:text-[2.8rem] lg:text-[48px]">
-                      <span className="text-[#d82d33]">{metric.accent}</span>
-                      <span className="text-white">{metric.remainder}</span>
+                      <span className="text-tedx-accent">{metric.accent}</span>
+                      <span className="text-tedx-white">{metric.remainder}</span>
                     </h3>
-                    <p className="mt-5 text-[15px] leading-[1.65] text-white sm:mt-6 sm:text-base lg:mt-[30px] lg:leading-[25px]">
+                    <p className="mt-5 text-[15px] leading-[1.65] text-tedx-white sm:mt-6 sm:text-base lg:mt-[30px] lg:leading-[25px]">
                       {metric.description}
                     </p>
                   </article>

@@ -366,14 +366,14 @@ function GalleryStage({ className }: { className: string }) {
   )}, 0, 0)`;
   const motionClassName = "will-change-transform";
   const dragHandleClassName =
-    "absolute z-10 flex items-center justify-center rounded-full bg-[#d82d33] text-white";
+    "absolute z-10 flex items-center justify-center rounded-full bg-tedx-accent text-tedx-white";
   const dragCursorClassName = isDragging ? "cursor-grabbing" : "cursor-grab";
 
   return (
     <div
       ref={stageRef}
       aria-label="Past moments gallery. Drag left or right to explore continuously."
-      className={`relative overflow-hidden bg-black select-none outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${dragCursorClassName} ${className}`}
+      className={`relative overflow-hidden bg-tedx-black select-none outline-none focus-visible:ring-2 focus-visible:ring-tedx-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-tedx-black ${dragCursorClassName} ${className}`}
       style={{ touchAction: "pan-y" }}
       tabIndex={0}
       onKeyDown={handleDragKeyDown}
@@ -426,18 +426,18 @@ export default function PastMomentsSection() {
     <section
       id="past-moments"
       aria-labelledby="past-moments-heading"
-      className="bg-black px-4 py-16 text-white sm:px-6 lg:px-0 lg:py-0"
+      className="bg-tedx-black px-4 py-16 text-tedx-white sm:px-6 lg:px-0 lg:py-0"
     >
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center">
         <h2
           id="past-moments-heading"
-          className="font-league-gothic text-center text-[4rem] leading-[0.8] tracking-[-0.04em] text-white drop-shadow-[0_4px_25px_rgba(0,0,0,0.35)] sm:text-[5.5rem] lg:text-[128px] lg:leading-[0.734375]"
+          className="tedx-section-heading-shadow font-league-gothic text-center text-[4rem] leading-[0.8] tracking-[-0.04em] text-tedx-white sm:text-[5.5rem] lg:text-[128px] lg:leading-[0.734375]"
         >
           <span>PAST </span>
-          <span className="text-[#d82d33]">MOMENTS</span>
+          <span className="text-tedx-accent">MOMENTS</span>
         </h2>
 
-        <p className="mt-7 max-w-[752px] px-3 text-center text-sm leading-[1.25] text-white sm:px-6 sm:text-base lg:mt-[51px] lg:px-0 lg:text-[18px] lg:leading-[21px]">
+        <p className="mt-7 max-w-[752px] px-3 text-center text-sm leading-[1.25] text-tedx-white sm:px-6 sm:text-base lg:mt-[51px] lg:px-0 lg:text-[18px] lg:leading-[21px]">
           From electrifying speaker performances to moving stories, take a look
           at some of last year&apos;s moments that have molded
           TEDxAteneodeManilaU and invigorated the Loyola Campus.

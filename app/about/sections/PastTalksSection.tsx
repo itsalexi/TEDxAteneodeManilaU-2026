@@ -78,7 +78,7 @@ const talkFilters = ["All", ...new Set(talks.map((talk) => talk.category))];
 function WatchNowButton({ href }: { href: string }) {
   return (
     <a
-      className="inline-flex h-[38px] w-[150px] items-center justify-center rounded-[5px] border border-[#d82d33] text-[16px] font-bold uppercase tracking-[0.01em] text-[#d82d33] transition-colors duration-200 hover:bg-[#d82d33] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d82d33] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      className="inline-flex h-[38px] w-[150px] items-center justify-center rounded-[5px] border border-tedx-accent text-[16px] font-bold uppercase tracking-[0.01em] text-tedx-accent transition-colors duration-200 hover:bg-tedx-accent hover:text-tedx-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent focus-visible:ring-offset-2 focus-visible:ring-offset-tedx-black"
       href={href}
       rel="noreferrer noopener"
       target="_blank"
@@ -91,7 +91,9 @@ function WatchNowButton({ href }: { href: string }) {
 function TalkItem({ talk }: { talk: TalkCard }) {
   return (
     <article className="flex w-full max-w-[392px] flex-col gap-6">
-      <div className={`relative w-full overflow-hidden bg-[#080808] ${talk.imageAspectClassName}`}>
+      <div
+        className={`relative w-full overflow-hidden bg-tedx-surface-deep ${talk.imageAspectClassName}`}
+      >
         <Image
           fill
           alt={talk.imageAlt}
@@ -103,9 +105,13 @@ function TalkItem({ talk }: { talk: TalkCard }) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-[12px] leading-6 text-[#d82d33]">{talk.category}</p>
-        <h3 className="text-[18px] font-bold leading-6 text-white">{talk.title}</h3>
-        <p className="text-[12px] leading-6 text-[#b0b0b0]">{talk.speaker}</p>
+        <p className="text-[12px] leading-6 text-tedx-accent">{talk.category}</p>
+        <h3 className="text-[18px] font-bold leading-6 text-tedx-white">
+          {talk.title}
+        </h3>
+        <p className="text-[12px] leading-6 text-tedx-muted-text">
+          {talk.speaker}
+        </p>
       </div>
 
       <WatchNowButton href={talk.href} />
@@ -141,28 +147,28 @@ export default function PastTalksSection() {
     <section
       id="past-talks"
       aria-labelledby="past-talks-heading"
-      className="bg-black px-4 py-20 text-white sm:px-6 lg:px-0 lg:py-24"
+      className="bg-tedx-black px-4 py-20 text-tedx-white sm:px-6 lg:px-0 lg:py-24"
     >
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center">
         <h2
           id="past-talks-heading"
-          className="font-league-gothic text-center text-[4rem] leading-[0.8] tracking-[-0.04em] text-white drop-shadow-[0_4px_25px_rgba(0,0,0,0.35)] sm:text-[5.5rem] lg:text-[128px] lg:leading-[0.734375]"
+          className="tedx-section-heading-shadow font-league-gothic text-center text-[4rem] leading-[0.8] tracking-[-0.04em] text-tedx-white sm:text-[5.5rem] lg:text-[128px] lg:leading-[0.734375]"
         >
           <span>PAST </span>
-          <span className="text-[#d82d33]">TALKS</span>
+          <span className="text-tedx-accent">TALKS</span>
         </h2>
 
         <div className="mt-8 flex w-full max-w-[1248px] justify-end lg:mt-9">
           <div className="relative" ref={filterRef}>
             <div className="flex items-center gap-[10px]">
-              <span className="text-[16px] leading-none text-white">
+              <span className="text-[16px] leading-none text-tedx-white">
                 Filter by:
               </span>
 
               <button
                 aria-expanded={isFilterOpen}
                 aria-haspopup="listbox"
-                className="inline-flex h-[39px] w-[105px] items-center justify-center gap-[10px] rounded-[5px] bg-[#d82d33] px-5 text-[16px] text-white transition-colors duration-200 hover:bg-[#c5282e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                className="inline-flex h-[39px] w-[105px] items-center justify-center gap-[10px] rounded-[5px] bg-tedx-accent px-5 text-[16px] text-tedx-white transition-colors duration-200 hover:bg-tedx-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-tedx-black"
                 type="button"
                 onClick={() => setIsFilterOpen((currentValue) => !currentValue)}
               >
@@ -188,7 +194,7 @@ export default function PastTalksSection() {
             </div>
 
             {isFilterOpen ? (
-              <div className="absolute right-0 top-[calc(100%+0.75rem)] z-20 min-w-[220px] rounded-[10px] border border-[#2f2f2f] bg-[#111111] p-2 shadow-[0_18px_50px_rgba(0,0,0,0.45)]">
+              <div className="tedx-popover-shadow absolute right-0 top-[calc(100%+0.75rem)] z-20 min-w-[220px] rounded-[10px] border border-tedx-outline-strong bg-tedx-surface p-2">
                 <ul role="listbox" aria-label="Past talks categories">
                   {talkFilters.map((filterOption) => {
                     const isActive = filterOption === activeFilter;
@@ -196,7 +202,7 @@ export default function PastTalksSection() {
                     return (
                       <li key={filterOption}>
                         <button
-                          className={`flex w-full items-center justify-between rounded-[8px] px-3 py-2 text-left text-sm transition-colors duration-150 ${isActive ? "bg-[#d82d33] text-white" : "text-white hover:bg-[#232323]"}`}
+                          className={`flex w-full items-center justify-between rounded-[8px] px-3 py-2 text-left text-sm transition-colors duration-150 ${isActive ? "bg-tedx-accent text-tedx-white" : "text-tedx-white hover:bg-tedx-surface-muted"}`}
                           type="button"
                           onClick={() => {
                             setActiveFilter(filterOption);
