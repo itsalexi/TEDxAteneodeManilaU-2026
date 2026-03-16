@@ -1,66 +1,19 @@
 const imgCrowd = "https://www.figma.com/api/mcp/asset/cb2766da-d0bc-478d-b27a-926d671c1b20";
-const imgRedPersonMask = "https://www.figma.com/api/mcp/asset/37ac8a7d-77c4-4b94-86fd-b0781ac0da5c";
 const imgArrow = "https://www.figma.com/api/mcp/asset/c916cda7-6337-4960-ad0f-5c9da999f5e8";
 
 export default function WhatIsTedxSection() {
   return (
-    <section id="what-is-tedx" className="relative w-full bg-black overflow-hidden min-h-[600px] md:min-h-[700px]">
+    <section id="what-is-tedx" className="relative w-full bg-black overflow-hidden md:min-h-[700px]">
 
-      {/* Large dark circular ground — matches Figma's giant rounded rect positioned right-center */}
-      <div
-        className="absolute rounded-full bg-[#2a2a2a] pointer-events-none overflow-hidden"
-        style={{
-          width: "clamp(560px, 108vw, 1600px)",
-          height: "clamp(560px, 108vw, 1600px)",
-          right: "-28%",
-          top: "50%",
-          transform: "translateY(-48%)",
-        }}
-      >
-        <img
-          src={imgCrowd}
-          alt=""
-          className="absolute object-cover"
-          style={{ width: "72%", top: "18%", left: "8%" }}
-        />
+      {/* Content — stacks on mobile, left column on desktop */}
+      <div className="relative z-10 py-12 md:py-28 px-6 md:pl-20">
+        <div className="w-full md:w-[38%] flex flex-col gap-8 md:gap-10">
 
-        {/* Chat bubbles scattered on the crowd */}
-        <ChatBubble className="absolute" style={{ top: "28%", left: "36%" }} />
-        <ChatBubble className="absolute" style={{ top: "18%", left: "62%" }} flipped />
-        <ChatBubble className="absolute" style={{ top: "48%", left: "54%" }} />
-        <ChatBubble className="absolute" style={{ top: "56%", left: "72%" }} flipped />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 flex flex-col md:flex-row py-20 md:py-28 px-6 md:pl-20 md:pr-0">
-
-        {/* Left column */}
-        <div className="md:w-[38%] flex flex-col gap-10">
-
-          {/* Heading + red person silhouette */}
+          {/* Heading */}
           <div className="relative">
-            {/* Red walking person — sits just right of the heading */}
-            <div
-              className="absolute hidden md:block"
-              style={{
-                right: "-14%",
-                top: 0,
-                width: 54,
-                height: 96,
-                backgroundColor: "#d82d33",
-                WebkitMaskImage: `url('${imgRedPersonMask}')`,
-                maskImage: `url('${imgRedPersonMask}')`,
-                WebkitMaskSize: "contain",
-                maskSize: "contain",
-                WebkitMaskRepeat: "no-repeat",
-                maskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                maskPosition: "center",
-              }}
-            />
             <h2
               className="font-display text-white leading-none tracking-tight"
-              style={{ fontSize: "clamp(3.5rem, 5.5vw, 6.5rem)" }}
+              style={{ fontSize: "clamp(4.5rem, 8vw, 10rem)" }}
             >
               WHAT IS
               <br />
@@ -69,7 +22,10 @@ export default function WhatIsTedxSection() {
           </div>
 
           {/* Body */}
-          <div className="font-sans text-[15px] text-white space-y-5" style={{ lineHeight: "1.6" }}>
+          <div
+            className="font-sans text-[15px] text-white space-y-5 w-full md:max-w-[300px]"
+            style={{ lineHeight: "1.6" }}
+          >
             <p>
               In the spirit of ideas worth spreading, TED has created a program called{" "}
               <strong className="text-tedx-red">TEDx</strong>.
@@ -90,8 +46,54 @@ export default function WhatIsTedxSection() {
         </div>
       </div>
 
-      {/* Top-right: "Wondering what past attendees have said?" */}
-      <div className="absolute top-8 right-8 z-20 flex flex-col items-end gap-3 text-white">
+      {/* Illustration — flows below text on mobile, absolute on desktop */}
+      <div className="relative md:absolute md:inset-y-0 md:left-[35%] md:right-0 h-[440px] md:h-full pointer-events-none">
+        {/* Red walking person — left edge of the ground shape */}
+        <div
+          className="absolute z-10"
+          style={{
+            left: "-2%",
+            top: "8%",
+            width: 40,
+            height: 72,
+            backgroundColor: "#d82d33",
+            WebkitMaskImage: `url('https://www.figma.com/api/mcp/asset/37ac8a7d-77c4-4b94-86fd-b0781ac0da5c')`,
+            maskImage: `url('https://www.figma.com/api/mcp/asset/37ac8a7d-77c4-4b94-86fd-b0781ac0da5c')`,
+            WebkitMaskSize: "contain",
+            maskSize: "contain",
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+            WebkitMaskPosition: "center",
+            maskPosition: "center",
+          }}
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="-89 -23 1012 816"
+          className="absolute inset-0 w-full h-full"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <path
+            d="M-66 212.069C-78 275.569 -55 330.569 -42.5 356.069L258.5 792.569H922.5V208.069L434.5 25.5688C393 9.56876 275 -22.9313 150 25.5687C45.0952 66.2718 -57 61.9021 -89 50.5687C-62.5 77.5687 -54.0063 148.602 -66 212.069Z"
+            fill="#2a2a2a"
+          />
+        </svg>
+
+        <img
+          src={imgCrowd}
+          alt=""
+          className="absolute object-cover"
+          style={{ width: "72%", top: "5%", left: "25%" }}
+        />
+
+        <ChatBubble className="absolute" style={{ top: "28%", left: "36%" }} />
+        <ChatBubble className="absolute" style={{ top: "18%", left: "62%" }} flipped />
+        <ChatBubble className="absolute" style={{ top: "48%", left: "54%" }} />
+        <ChatBubble className="absolute" style={{ top: "56%", left: "72%" }} flipped />
+      </div>
+
+      {/* "Wondering" — desktop only, would overlap content on mobile */}
+      <div className="hidden md:flex absolute top-8 right-8 z-20 flex-col items-end gap-3 text-white">
         <p className="font-sans text-sm text-right leading-snug">
           Wondering what past
           <br />
