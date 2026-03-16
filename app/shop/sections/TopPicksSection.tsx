@@ -15,12 +15,9 @@ type MerchPick = {
 };
 
 const MERCH_BG_BLUR_SRC = "/merch-bg-blur.svg";
-const HEADING_GRADIENT =
-  "linear-gradient(180deg, rgba(0, 0, 0, 0) 12.689%, rgba(0, 0, 0, 0.43) 90.667%), linear-gradient(90deg, rgb(216, 45, 51) 0%, rgb(216, 45, 51) 100%)";
-const HEADING_SHARP_MASK =
-  "linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.96) 34%, rgba(0, 0, 0, 0.78) 56%, rgba(0, 0, 0, 0.32) 78%, rgba(0, 0, 0, 0) 100%)";
-const HEADING_BLUR_MASK =
-  "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 26%, rgba(0, 0, 0, 0.42) 52%, rgba(0, 0, 0, 0.82) 74%, rgba(0, 0, 0, 1) 100%)";
+const HEADING_GRADIENT = "var(--tedx-top-picks-heading-gradient)";
+const HEADING_SHARP_MASK = "var(--tedx-top-picks-heading-mask-sharp)";
+const HEADING_BLUR_MASK = "var(--tedx-top-picks-heading-mask-blur)";
 
 const FEATURED_MERCH: MerchPick[] = [
   {
@@ -47,7 +44,7 @@ function ChevronIcon({ direction }: { direction: "left" | "right" }) {
   return (
     <svg
       aria-hidden="true"
-      className={`h-10 w-10 drop-shadow-[0_0_18px_rgba(255,255,255,0.2)] sm:h-12 sm:w-12 lg:h-16 lg:w-16 ${
+      className={`tedx-chevron-glow h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 ${
         direction === "right" ? "rotate-180" : ""
       }`}
       fill="none"
@@ -85,13 +82,13 @@ export default function TopPicksSection() {
   return (
     <section
       aria-labelledby="top-picks-heading"
-      className="relative isolate overflow-hidden bg-black py-12 text-tedx-white sm:py-16 lg:min-h-[52rem] lg:py-[5.375rem]"
+      className="relative isolate overflow-hidden bg-tedx-black py-12 text-tedx-white sm:py-16 lg:min-h-[52rem] lg:py-[5.375rem]"
       id="top-picks"
     >
       <h2 className="sr-only" id="top-picks-heading">
         Our Top Merch Picks
       </h2>
-      <div aria-hidden="true" className="absolute inset-0 bg-black" />
+      <div aria-hidden="true" className="absolute inset-0 bg-tedx-black" />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-[54%] flex h-[min(150vw,68rem)] w-[min(150vw,68rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:top-[56.5%] sm:h-[min(117vw,105.757rem)] sm:w-[min(117vw,105.757rem)]"
@@ -118,7 +115,7 @@ export default function TopPicksSection() {
         >
           <button
             aria-label="Show previous merch pick"
-            className="absolute left-0 top-[52%] z-20 hidden -translate-y-1/2 p-1 text-white transition duration-200 hover:scale-105 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white sm:left-4 md:block lg:left-[7.9%]"
+            className="absolute left-0 top-[52%] z-20 hidden -translate-y-1/2 p-1 text-tedx-white transition duration-200 hover:scale-105 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white sm:left-4 md:block lg:left-[7.9%]"
             onClick={showPrevious}
             type="button"
           >
@@ -127,7 +124,7 @@ export default function TopPicksSection() {
 
           <button
             aria-label="Show next merch pick"
-            className="absolute right-0 top-[52%] z-20 hidden -translate-y-1/2 p-1 text-white transition duration-200 hover:scale-105 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white sm:right-4 md:block lg:right-[7.9%]"
+            className="absolute right-0 top-[52%] z-20 hidden -translate-y-1/2 p-1 text-tedx-white transition duration-200 hover:scale-105 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white sm:right-4 md:block lg:right-[7.9%]"
             onClick={showNext}
             type="button"
           >
@@ -174,7 +171,7 @@ export default function TopPicksSection() {
                     <div className="w-full shrink-0 px-2" key={pick.id}>
                       <p
                         aria-live={currentIndex === index ? "polite" : "off"}
-                        className="text-center font-sans text-[2rem] font-normal leading-[0.95] tracking-[-0.04em] text-white sm:text-[3.5rem] sm:leading-none lg:text-[64px] lg:leading-[160px] lg:tracking-[-2.56px]"
+                        className="text-center font-sans text-[2rem] font-normal leading-[0.95] tracking-[-0.04em] text-tedx-white sm:text-[3.5rem] sm:leading-none lg:text-[64px] lg:leading-[160px] lg:tracking-[-2.56px]"
                       >
                         {pick.title}
                       </p>
@@ -206,7 +203,7 @@ export default function TopPicksSection() {
               </div>
 
               <Link
-                className="mt-2 inline-flex items-center justify-center whitespace-nowrap px-5 py-3 text-[1.9rem] font-normal leading-none tracking-[-0.04em] text-white transition duration-200 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white md:absolute md:bottom-[14%] md:left-1/2 md:mt-0 md:-translate-x-1/2 md:text-[clamp(2.25rem,4.6vw,3rem)]"
+                className="mt-2 inline-flex items-center justify-center whitespace-nowrap px-5 py-3 text-[1.9rem] font-normal leading-none tracking-[-0.04em] text-tedx-white transition duration-200 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white md:absolute md:bottom-[14%] md:left-1/2 md:mt-0 md:-translate-x-1/2 md:text-[clamp(2.25rem,4.6vw,3rem)]"
                 href={activePick.ctaHref}
                 rel="noreferrer"
                 target="_blank"
@@ -217,7 +214,7 @@ export default function TopPicksSection() {
               <div className="mt-3 flex w-full max-w-[10rem] items-center justify-between md:hidden">
                 <button
                   aria-label="Show previous merch pick"
-                  className="p-1 text-white transition duration-200 hover:scale-105 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white"
+                  className="p-1 text-tedx-white transition duration-200 hover:scale-105 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white"
                   onClick={showPrevious}
                   type="button"
                 >
@@ -225,7 +222,7 @@ export default function TopPicksSection() {
                 </button>
                 <button
                   aria-label="Show next merch pick"
-                  className="p-1 text-white transition duration-200 hover:scale-105 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white"
+                  className="p-1 text-tedx-white transition duration-200 hover:scale-105 hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white"
                   onClick={showNext}
                   type="button"
                 >

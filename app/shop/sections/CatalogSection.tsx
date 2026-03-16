@@ -19,17 +19,17 @@ const CATALOG_ITEMS: CatalogItem[] = Array.from({ length: 9 }, (_, index) => ({
 
 function MerchCard({ item }: { item: CatalogItem }) {
   return (
-    <article className="w-full max-w-[18.125rem] rounded-[25px] bg-white/[0.04] p-5">
+    <article className="w-full max-w-[18.125rem] rounded-[25px] bg-tedx-white/4 p-5">
       <div className="flex flex-col gap-[1.875rem]">
         <div
           aria-hidden="true"
-          className="aspect-[249.28/228] w-full rounded-[15.2px] bg-[#d82d33]"
+          className="aspect-[249.28/228] w-full rounded-[15.2px] bg-tedx-accent"
         />
-        <div className={`${inter.className} flex flex-col items-start text-white`}>
+        <div className={`${inter.className} flex flex-col items-start text-tedx-white`}>
           <h3 className="text-[1.125rem] font-extrabold leading-[1.15] tracking-[-0.04em]">
             {item.title}
           </h3>
-          <p className="mt-1 text-base font-normal leading-none tracking-[-0.04em] text-white/90">
+          <p className="mt-1 text-base font-normal leading-none tracking-[-0.04em] text-tedx-white/90">
             {item.price}
           </p>
         </div>
@@ -41,20 +41,20 @@ function MerchCard({ item }: { item: CatalogItem }) {
 export default function CatalogSection() {
   return (
     <section
-      className="relative w-full px-4 pb-16 pt-[4.375rem] text-white sm:px-6 sm:pb-20 lg:px-8 lg:pb-24"
+      className="relative w-full px-4 pb-16 pt-[4.375rem] text-tedx-white sm:px-6 sm:pb-20 lg:px-8 lg:pb-24"
       id="catalog"
     >
       <div className="mx-auto flex w-full max-w-[75.6875rem] flex-col items-center gap-[3.125rem]">
         <div className="flex w-full flex-col items-center gap-[1.875rem] text-center">
           <h2
-            className={`${leagueGothic.className} w-full text-center text-[3.75rem] uppercase leading-[0.9] tracking-[-0.03em] text-white [text-shadow:0px_4px_25px_rgba(0,0,0,0.35)] sm:text-[5.5rem] lg:text-[8rem] lg:leading-[8rem] lg:tracking-[-4px]`}
+            className={`${leagueGothic.className} tedx-section-heading-shadow w-full text-center text-[3.75rem] uppercase leading-[0.9] tracking-[-0.03em] text-tedx-white sm:text-[5.5rem] lg:text-[8rem] lg:leading-[8rem] lg:tracking-[-4px]`}
           >
             MOMENTUM MERCH
           </h2>
 
           <div className="flex w-full max-w-[35.4375rem] flex-col items-center gap-[1.875rem]">
             <p
-              className={`${inter.className} max-w-[35.4375rem] text-sm font-normal leading-[1.2] text-[#d9d9d9] sm:text-base`}
+              className={`${inter.className} max-w-[35.4375rem] text-sm font-normal leading-[1.2] text-tedx-muted-text sm:text-base`}
             >
               Merch can be purchased onsite from March 15 to 18.
               <br />
@@ -62,7 +62,7 @@ export default function CatalogSection() {
             </p>
 
             <Link
-              className="inline-flex items-center justify-center rounded-[5px] border-2 border-white px-8 py-4 text-2xl font-normal leading-none text-white transition duration-200 hover:border-tedx-red hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white"
+              className="inline-flex items-center justify-center rounded-[5px] border-2 border-tedx-white px-8 py-4 text-2xl font-normal leading-none text-tedx-white transition duration-200 hover:border-tedx-red hover:text-tedx-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-tedx-white"
               href={MERCH_ORDER_PLACEHOLDER_URL}
               rel="noreferrer"
               target="_blank"
