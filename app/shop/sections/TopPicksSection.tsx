@@ -5,6 +5,7 @@ import Link from "next/link";
 import { startTransition, useState } from "react";
 
 import { leagueGothic } from "@/app/fonts";
+import { MERCH_ORDER_PLACEHOLDER_URL } from "@/app/shop/constants";
 
 type MerchPick = {
   id: string;
@@ -13,7 +14,6 @@ type MerchPick = {
   ctaHref: string;
 };
 
-const ORDER_FORM_PLACEHOLDER = "https://example.com/tedx-merch-order";
 const MERCH_BG_BLUR_SRC = "/merch-bg-blur.svg";
 const HEADING_GRADIENT =
   "linear-gradient(180deg, rgba(0, 0, 0, 0) 12.689%, rgba(0, 0, 0, 0.43) 90.667%), linear-gradient(90deg, rgb(216, 45, 51) 0%, rgb(216, 45, 51) 100%)";
@@ -27,19 +27,19 @@ const FEATURED_MERCH: MerchPick[] = [
     id: "one-whole-zip",
     title: "One Whole Zip",
     imageSrc: "/tshirt.png",
-    ctaHref: ORDER_FORM_PLACEHOLDER,
+    ctaHref: MERCH_ORDER_PLACEHOLDER_URL,
   },
   {
     id: "red-thread-theory",
     title: "Red Thread Theory",
     imageSrc: "/tshirt.png",
-    ctaHref: ORDER_FORM_PLACEHOLDER,
+    ctaHref: MERCH_ORDER_PLACEHOLDER_URL,
   },
   {
     id: "static-pulse",
     title: "Static Pulse",
     imageSrc: "/tshirt.png",
-    ctaHref: ORDER_FORM_PLACEHOLDER,
+    ctaHref: MERCH_ORDER_PLACEHOLDER_URL,
   },
 ];
 
