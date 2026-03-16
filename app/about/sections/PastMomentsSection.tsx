@@ -1,10 +1,17 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type PointerEvent,
+} from "react";
 
 const GALLERY_WIDTH = 1440;
 const GALLERY_HEIGHT = 667;
 const KEYBOARD_DRAG_STEP = 120;
+const AUTO_SCROLL_SPEED = 38;
 const ROW_COPY_MULTIPLIERS = [-1, 0, 1] as const;
 
 type Frame = {
@@ -235,14 +242,57 @@ function GalleryStage({ className }: { className: string }) {
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
+  const dragOffsetRef = useRef(0);
   const dragStateRef = useRef<DragState>({
     pointerId: null,
     startX: 0,
     startOffset: 0,
   });
+  const animationFrameRef = useRef<number | null>(null);
+  const previousFrameTimeRef = useRef<number | null>(null);
 
   const topRowRepeatWidth = getRepeatWidth(topRowTiles);
   const bottomRowRepeatWidth = getRepeatWidth(bottomRowTiles);
+
+  useEffect(() => {
+    if (isDragging) {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      previousFrameTimeRef.current = null;
+      return;
+    }
+
+    function step(frameTime: number) {
+      if (previousFrameTimeRef.current !== null) {
+        const elapsedTime = frameTime - previousFrameTimeRef.current;
+        const nextOffset =
+          dragOffsetRef.current - (elapsedTime / 1000) * AUTO_SCROLL_SPEED;
+
+        dragOffsetRef.current = nextOffset;
+        setDragOffset(nextOffset);
+      }
+
+      previousFrameTimeRef.current = frameTime;
+      animationFrameRef.current = requestAnimationFrame(step);
+    }
+
+    animationFrameRef.current = requestAnimationFrame(step);
+
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      previousFrameTimeRef.current = null;
+    };
+  }, [isDragging]);
+
+  function setGalleryOffset(nextOffset: number) {
+    dragOffsetRef.current = nextOffset;
+    setDragOffset(nextOffset);
+  }
 
   function handleDragStart(event: PointerEvent<HTMLDivElement>) {
     if (event.pointerType === "mouse" && event.button !== 0) {
@@ -271,7 +321,7 @@ function GalleryStage({ className }: { className: string }) {
     const designSpaceDelta =
       ((event.clientX - dragState.startX) / stageWidth) * GALLERY_WIDTH;
 
-    setDragOffset(dragState.startOffset + designSpaceDelta);
+    setGalleryOffset(dragState.startOffset + designSpaceDelta);
   }
 
   function handleDragEnd(event: PointerEvent<HTMLDivElement>) {
@@ -292,17 +342,17 @@ function GalleryStage({ className }: { className: string }) {
   function handleDragKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      setDragOffset((currentOffset) => currentOffset - KEYBOARD_DRAG_STEP);
+      setGalleryOffset(dragOffsetRef.current - KEYBOARD_DRAG_STEP);
     }
 
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      setDragOffset((currentOffset) => currentOffset + KEYBOARD_DRAG_STEP);
+      setGalleryOffset(dragOffsetRef.current + KEYBOARD_DRAG_STEP);
     }
 
     if (event.key === "Home" || event.key === "Escape") {
       event.preventDefault();
-      setDragOffset(0);
+      setGalleryOffset(0);
     }
   }
 
@@ -316,7 +366,7 @@ function GalleryStage({ className }: { className: string }) {
   )}, 0, 0)`;
   const motionClassName = "will-change-transform";
   const dragHandleClassName =
-    "pointer-events-none absolute z-10 flex items-center justify-center rounded-full bg-[#d82d33] text-white";
+    "absolute z-10 flex items-center justify-center rounded-full bg-[#d82d33] text-white";
   const dragCursorClassName = isDragging ? "cursor-grabbing" : "cursor-grab";
 
   return (
