@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Gothic&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -39,6 +41,20 @@
 }
 
 @layer components {
+  .font-league-gothic {
+    font-family: "League Gothic", "Arial Narrow", "Helvetica Neue Condensed",
+      sans-serif;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   .nav-link-underline::after {
     content: "";
     position: absolute;
