@@ -229,7 +229,7 @@
               <img src={imgQuizTop} alt="" className="absolute inset-0 w-full h-full" />
             </div>
             <div className="absolute flex items-center justify-center"
-                style={{ top: "34%", right: "34.3%", bottom: "36.79%", left: "32.69%" }}>
+                style={{ top: "24%", right: "47.8%", bottom: "46.79%", left: "19.19%" }}>
               <div style={{ flexShrink: 0, width: v(138), height: v(78), transform: "rotate(-31deg) skewX(30deg) scaleY(0.87)" }}>
                 <p className="font-display text-center leading-none"
                   style={{ fontSize: v(300), color: "rgba(176,176,176,0.25)" }}>?</p>
