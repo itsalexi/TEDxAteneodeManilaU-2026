@@ -50,6 +50,11 @@ function generateReferenceCode() {
   return `TEDX-${timestamp}-${randomSuffix}`;
 }
 
+function isValidPhone(value: string) {
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 7;
+}
+
 function isEmailAllowlisted(email: string) {
   const raw = process.env.ADMIN_EMAILS ?? "";
   const allowlist = raw
@@ -117,6 +122,11 @@ function validateSubmitArgs(args: SubmitArgs) {
   for (const attendee of args.attendees) {
     if (!participantTypeValues.has(attendee.participantType)) {
       throw new Error("Invalid participant type.");
+    }
+    if (!isValidPhone(attendee.contactNumber)) {
+      throw new Error(
+        `Invalid contact number for ${attendee.fullName || "an attendee"}. Please enter at least 7 digits.`,
+      );
     }
   }
 
@@ -193,6 +203,17 @@ export const submitRegistration = mutationGeneric({
   handler: async (ctx, args) => {
     validateSubmitArgs({ ...args, paymentProofStorageId: args.paymentProofStorageId });
 
+    const primaryEmail = (args.attendees[0]?.email ?? "").toLowerCase();
+    const existing = await ctx.db
+      .query("registrations")
+      .withIndex("by_primaryAttendeeEmail", (q) => q.eq("primaryAttendeeEmail", primaryEmail))
+      .first();
+    if (existing) {
+      throw new Error(
+        "A registration with this email address already exists. Contact the team if this is an error.",
+      );
+    }
+
     const now = Date.now();
     const referenceCode = generateReferenceCode();
     const registrationId = await ctx.db.insert("registrations", {
@@ -200,7 +221,7 @@ export const submitRegistration = mutationGeneric({
       referenceCode,
       createdAt: now,
       status: "submitted",
-      primaryAttendeeEmail: args.attendees[0]?.email ?? "",
+      primaryAttendeeEmail: primaryEmail,
     });
     return { registrationId, referenceCode };
   },

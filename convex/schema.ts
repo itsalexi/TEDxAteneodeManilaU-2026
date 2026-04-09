@@ -45,9 +45,9 @@ export default defineSchema({
       }),
     ),
     paymentProofStorageId: v.id("_storage"),
-    referenceCode: v.optional(v.string()),
+    referenceCode: v.string(),
     createdAt: v.number(),
-    status: v.optional(v.union(v.literal("submitted"), v.literal("verified"))),
+    status: v.union(v.literal("submitted"), v.literal("verified")),
     primaryAttendeeEmail: v.string(),
   })
     .index("by_createdAt", ["createdAt"])

@@ -92,6 +92,59 @@ function isValidEmail(value: string) {
   return /\S+@\S+\.\S+/.test(value.trim());
 }
 
+function formatRelativeTime(ts: number, now: number): string {
+  const seconds = Math.round((now - ts) / 1000);
+  if (seconds < 10) return "just now";
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  return `${hours}h ago`;
+}
+
+function isValidPhone(value: string) {
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 7;
+}
+
+function StyledCheckbox({
+  checked,
+  onChange,
+}: {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  return (
+    <span
+      role="checkbox"
+      aria-checked={checked}
+      tabIndex={0}
+      onClick={() => onChange(!checked)}
+      onKeyDown={(e) => {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          onChange(!checked);
+        }
+      }}
+      className={`inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded border-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent focus-visible:ring-offset-1 focus-visible:ring-offset-tedx-surface-deep ${
+        checked ? "border-tedx-accent bg-tedx-accent" : "border-tedx-outline-strong bg-tedx-black"
+      }`}
+    >
+      {checked && (
+        <svg viewBox="0 0 10 10" fill="none" className="h-2.5 w-2.5" aria-hidden="true">
+          <path
+            d="M1.5 5l2.5 2.5 4.5-4.5"
+            stroke="white"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
+    </span>
+  );
+}
+
 export default function RegisterPage() {
   const pricing = getPricingConfig();
   const generateUploadUrl = useMutation(api.registrations.generateUploadUrl);
@@ -103,7 +156,6 @@ export default function RegisterPage() {
   const [hearAbout, setHearAbout] = useState<HearAboutOption[]>([]);
   const [encourageFacebookFollow, setEncourageFacebookFollow] = useState(true);
   const [dataPrivacyConsent, setDataPrivacyConsent] = useState(false);
-  const [emergencyContact, setEmergencyContact] = useState("");
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [proofUploadError, setProofUploadError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -113,6 +165,12 @@ export default function RegisterPage() {
   const [successReceipt, setSuccessReceipt] = useState<SuccessReceipt | null>(null);
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 10_000);
+    return () => clearInterval(interval);
+  }, []);
 
   const computedLines = useMemo<ComputedLine[]>(() => {
     if (purchaseMode === "individual") {
@@ -165,7 +223,6 @@ export default function RegisterPage() {
 
   const hasIncompleteGroup = purchaseMode === "group_of_three" && attendees.length !== 3;
   const totalAmount = computedLines.reduce((sum, line) => sum + line.lineTotal, 0);
-  const progressPercent = (currentStep / steps.length) * 100;
 
   const updateAttendee = (index: number, key: keyof Attendee, value: string) => {
     setAttendees((current) =>
@@ -185,12 +242,6 @@ export default function RegisterPage() {
       { ...(current[1] ?? initialAttendee) },
       { ...(current[2] ?? initialAttendee) },
     ]);
-  };
-
-  const removeAttendee = (index: number) => {
-    if (purchaseMode === "group_of_three") return;
-    if (index !== 0) return;
-    setAttendees([{ ...initialAttendee }]);
   };
 
   const toggleHearAbout = (value: HearAboutOption) => {
@@ -228,7 +279,6 @@ export default function RegisterPage() {
       if (typeof parsed.dataPrivacyConsent === "boolean") {
         setDataPrivacyConsent(parsed.dataPrivacyConsent);
       }
-      if (typeof parsed.emergencyContact === "string") setEmergencyContact(parsed.emergencyContact);
       if (parsed.savedAt) setLastSavedAt(parsed.savedAt);
     } catch {
       // ignore malformed draft payloads
@@ -247,7 +297,6 @@ export default function RegisterPage() {
         hearAbout,
         encourageFacebookFollow,
         dataPrivacyConsent,
-        emergencyContact,
         savedAt: Date.now(),
       };
       localStorage.setItem(draftStorageKey, JSON.stringify(payload));
@@ -264,7 +313,6 @@ export default function RegisterPage() {
     hearAbout,
     encourageFacebookFollow,
     dataPrivacyConsent,
-    emergencyContact,
   ]);
 
   const onProofFileChange = (file: File | null) => {
@@ -300,7 +348,10 @@ export default function RegisterPage() {
 
   const validateForm = (step: number) => {
     const errors: FieldErrors = {};
-    const targetIndices = step === 1 ? [0] : attendees.map((_, index) => index);
+    const targetIndices =
+      step === 1 ? [0] :
+      step === 3 ? attendees.map((_, index) => index) :
+      [];
 
     for (const index of targetIndices) {
       const attendee = attendees[index];
@@ -310,7 +361,11 @@ export default function RegisterPage() {
       } else if (!isValidEmail(attendee.email)) {
         errors[getFieldPath(index, "email")] = "Invalid email";
       }
-      if (!attendee.contactNumber.trim()) errors[getFieldPath(index, "contactNumber")] = "Required";
+      if (!attendee.contactNumber.trim()) {
+        errors[getFieldPath(index, "contactNumber")] = "Required";
+      } else if (!isValidPhone(attendee.contactNumber)) {
+        errors[getFieldPath(index, "contactNumber")] = "Enter at least 7 digits";
+      }
       if (!attendee.schoolAffiliation.trim()) {
         errors[getFieldPath(index, "schoolAffiliation")] = "Required";
       }
@@ -346,6 +401,16 @@ export default function RegisterPage() {
     return "";
   };
 
+  // For individual purchase, step 3 (Attendees) is skipped — go straight to Payment.
+  const getNextStep = (step: number) => {
+    if (step === 2 && purchaseMode === "individual") return 4;
+    return Math.min(step + 1, 4);
+  };
+  const getPrevStep = (step: number) => {
+    if (step === 4 && purchaseMode === "individual") return 2;
+    return Math.max(step - 1, 1);
+  };
+
   const nextStep = () => {
     const error = validateStep(currentStep);
     if (error) {
@@ -353,12 +418,12 @@ export default function RegisterPage() {
       return;
     }
     setStepError("");
-    setCurrentStep((step) => Math.min(step + 1, 4));
+    setCurrentStep((step) => getNextStep(step));
   };
 
   const prevStep = () => {
     setStepError("");
-    setCurrentStep((step) => Math.max(step - 1, 1));
+    setCurrentStep((step) => getPrevStep(step));
   };
 
   const uploadPaymentProof = async (): Promise<Id<"_storage">> => {
@@ -383,10 +448,11 @@ export default function RegisterPage() {
     event.preventDefault();
     setSubmitMessage("");
 
-    const error = validateStep(3);
+    const attendeeStep = purchaseMode === "group_of_three" ? 3 : 1;
+    const error = validateStep(attendeeStep);
     if (error) {
       setSubmitMessage(error);
-      setCurrentStep(3);
+      setCurrentStep(attendeeStep);
       return;
     }
 
@@ -397,7 +463,6 @@ export default function RegisterPage() {
         attendees,
         encourageFacebookFollow,
         dataPrivacyConsent,
-        emergencyContact: emergencyContact || undefined,
         hearAbout,
         ticketLines: computedLines.map((line) => ({
           purchaseMode: line.purchaseMode,
@@ -432,60 +497,81 @@ export default function RegisterPage() {
   if (successReceipt) {
     return (
       <section className="bg-tedx-black px-4 py-8 text-tedx-white sm:px-6 sm:py-12 lg:px-8">
-        <div className="mx-auto w-full max-w-4xl rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-5 sm:p-10">
-          <h1 className="font-league-gothic text-5xl uppercase tracking-wide text-balance sm:text-6xl">
-            Registration Received
-          </h1>
-          <p className="mt-3 text-sm text-tedx-muted-text sm:text-base">
-            Thank you, {successReceipt.primaryName}. Your submission is now in our queue for
-            review.
-          </p>
+        <div className="mx-auto w-full max-w-4xl">
+          <div className="relative overflow-hidden rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-6 sm:p-10">
+            {/* Decorative red glow */}
+            <div
+              className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-tedx-accent opacity-10 blur-3xl"
+              aria-hidden="true"
+            />
+            <div className="relative">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tedx-accent">
+                  <svg viewBox="0 0 20 20" fill="none" className="h-5 w-5" aria-hidden="true">
+                    <path d="M4 10l4 4 8-8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <h1 className="font-league-gothic text-5xl uppercase tracking-wide text-balance sm:text-6xl">
+                  Registration Received
+                </h1>
+              </div>
+              <p className="mt-3 max-w-lg text-sm leading-relaxed text-tedx-muted-text sm:text-base">
+                Thank you, <strong className="text-tedx-white">{successReceipt.primaryName}</strong>.
+                Your submission is now in our queue for review. Save your reference code.
+              </p>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-4">
-              <p className="text-xs font-bold uppercase text-tedx-muted-text">
-                Reference Number
-              </p>
-              <p className="mt-2 text-lg font-bold text-tedx-accent">
-                {successReceipt.referenceCode}
-              </p>
-            </div>
-            <div className="rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-4">
-              <p className="text-xs font-bold uppercase text-tedx-muted-text">Amount Submitted</p>
-              <p className="mt-2 text-lg font-bold">{formatPhp(successReceipt.totalAmount)}</p>
+              {/* Reference code — hero treatment */}
+              <div className="mt-8 rounded-xl border-2 border-tedx-accent bg-tedx-surface-deep p-6">
+                <p className="text-xs font-bold uppercase tracking-wider text-tedx-muted-text">
+                  Your Reference Code
+                </p>
+                <p className="mt-2 font-league-gothic text-4xl uppercase tracking-widest text-tedx-accent sm:text-5xl">
+                  {successReceipt.referenceCode}
+                </p>
+                <p className="mt-2 text-xs text-tedx-muted-text">
+                  Screenshot or copy this code — you will need it if you contact support.
+                </p>
+              </div>
+
+              {/* Amount row */}
+              <div className="mt-4 flex items-center justify-between rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-4">
+                <p className="text-xs font-bold uppercase text-tedx-muted-text">Amount Submitted</p>
+                <p className="font-league-gothic text-2xl uppercase text-tedx-white">
+                  {formatPhp(successReceipt.totalAmount)}
+                </p>
+              </div>
+
+              {/* Contact info */}
+              <div className="mt-4 rounded-xl border border-tedx-outline-strong bg-tedx-black p-5 text-sm">
+                <p className="text-tedx-muted-text">
+                  A confirmation message will be sent to{" "}
+                  <strong className="text-tedx-white">{successReceipt.primaryEmail}</strong>
+                </p>
+                <div className="mt-3 border-t border-tedx-outline-strong pt-3 text-tedx-muted-text">
+                  <p>Need help? Reach the team with your reference code:</p>
+                  <p className="mt-1 font-bold text-tedx-white">tedxateneodemanilau@gmail.com</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSuccessReceipt(null);
+                  setCurrentStep(1);
+                  setAttendees([{ ...initialAttendee }]);
+                  setPurchaseMode("individual");
+                  setHearAbout([]);
+                  setEncourageFacebookFollow(true);
+                  setDataPrivacyConsent(false);
+                  setLastSavedAt(null);
+                  localStorage.removeItem(draftStorageKey);
+                }}
+                className="mt-6 rounded-md border border-tedx-outline-strong px-4 py-2 text-xs font-bold uppercase transition-colors hover:border-tedx-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent"
+              >
+                Submit Another Registration
+              </button>
             </div>
           </div>
-
-          <div className="mt-6 rounded-xl border border-tedx-outline-strong bg-tedx-black p-5">
-            <p className="text-sm text-tedx-muted-text">
-              A confirmation message will be sent to:
-            </p>
-            <p className="mt-1 text-sm font-bold">{successReceipt.primaryEmail}</p>
-            <p className="mt-4 text-sm text-tedx-muted-text">
-              Need help? Contact the team with your reference number:
-            </p>
-            <p className="mt-1 text-sm font-bold">Email: tedxateneodemanilau@gmail.com</p>
-            <p className="text-sm font-bold">Phone: +63 917 000 0000</p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              setSuccessReceipt(null);
-              setCurrentStep(1);
-              setAttendees([{ ...initialAttendee }]);
-              setPurchaseMode("individual");
-              setHearAbout([]);
-              setEncourageFacebookFollow(true);
-              setDataPrivacyConsent(false);
-              setEmergencyContact("");
-              setLastSavedAt(null);
-              localStorage.removeItem(draftStorageKey);
-            }}
-            className="mt-6 rounded-md bg-tedx-accent px-4 py-2 text-xs font-bold uppercase transition-colors hover:bg-tedx-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent"
-          >
-            Submit Another Registration
-          </button>
         </div>
       </section>
     );
@@ -503,39 +589,84 @@ export default function RegisterPage() {
           </p>
         </header>
 
-        <div className="mt-7 rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-4">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-xs font-bold uppercase text-tedx-muted-text">
-              {steps[currentStep - 1]} - Step {currentStep} of {steps.length}
-            </p>
-            <p className="text-xs font-bold uppercase text-tedx-muted-text">
-              {Math.round(progressPercent)}%
-            </p>
-          </div>
-          <div className="mt-3 h-2 overflow-hidden rounded-full bg-tedx-black">
+        <div className="mt-7 rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-5">
+          <div className="relative flex items-start justify-between">
+            {/* Background connector line */}
             <div
-              className="h-full rounded-full bg-tedx-accent transition-all duration-300"
-              style={{ width: `${progressPercent}%` }}
+              aria-hidden="true"
+              className="absolute left-0 right-0 top-3.5 h-px bg-tedx-outline-strong"
             />
+            {/* Active connector overlay */}
+            <div
+              aria-hidden="true"
+              className="absolute left-0 top-3.5 h-px bg-tedx-accent transition-all duration-500"
+              style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+            />
+            {steps.map((stepLabel, stepIndex) => {
+              const stepNumber = stepIndex + 1;
+              const isSkipped = purchaseMode === "individual" && stepNumber === 3;
+              const isComplete = !isSkipped && currentStep > stepNumber;
+              const isCurrent = !isSkipped && currentStep === stepNumber;
+              return (
+                <div
+                  key={stepLabel}
+                  className={`relative z-10 flex flex-col items-center gap-1.5 transition-opacity duration-300 ${isSkipped ? "opacity-30" : ""}`}
+                  style={{ width: `${100 / steps.length}%` }}
+                >
+                  <div
+                    className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-xs font-bold transition-colors duration-300 ${
+                      isComplete
+                        ? "border-tedx-accent bg-tedx-accent text-white"
+                        : isCurrent
+                          ? "border-tedx-accent bg-tedx-black text-tedx-accent"
+                          : "border-tedx-outline-strong bg-tedx-black text-tedx-muted-text"
+                    }`}
+                  >
+                    {isComplete ? (
+                      <svg viewBox="0 0 12 12" fill="none" className="h-3.5 w-3.5" aria-hidden="true">
+                        <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    ) : (
+                      stepNumber
+                    )}
+                  </div>
+                  <span
+                    className={`text-center text-xs font-bold uppercase leading-tight transition-colors duration-300 ${
+                      isCurrent ? "text-tedx-white" : "text-tedx-muted-text"
+                    }`}
+                  >
+                    {stepLabel}
+                    {isSkipped && <span className="block text-[10px] normal-case">skipped</span>}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        <div className="mt-3 min-h-5 text-xs text-tedx-muted-text" aria-live="polite">
-          {lastSavedAt
-            ? `Autosaved ${new Date(lastSavedAt).toLocaleTimeString([], {
-                hour: "numeric",
-                minute: "2-digit",
-              })}`
-            : "Draft not saved yet"}
+        <div className="mt-2 flex items-center gap-1.5 text-xs text-tedx-muted-text" aria-live="polite">
+          {lastSavedAt ? (
+            <>
+              <svg viewBox="0 0 12 12" fill="none" className="h-3 w-3 shrink-0 text-tedx-accent" aria-hidden="true">
+                <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Draft saved {formatRelativeTime(lastSavedAt, now)}
+            </>
+          ) : (
+            "Draft not saved yet"
+          )}
         </div>
 
         <form className="mt-8 space-y-8" onSubmit={onSubmit}>
           {currentStep === 1 && (
             <section className="rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-5">
-              <h2 className="text-2xl font-bold uppercase">Step 1: Your Information</h2>
-              <p className="mt-1 text-sm text-tedx-muted-text">
-                Add primary attendee details.
-              </p>
+              <div className="flex items-start gap-3">
+                <div className="mt-1 w-1 shrink-0 self-stretch rounded-full bg-tedx-accent" aria-hidden="true" />
+                <div>
+                  <h2 className="font-league-gothic text-3xl uppercase tracking-wide">Step 1: Your Information</h2>
+                  <p className="mt-1 text-sm text-tedx-muted-text">Add primary attendee details.</p>
+                </div>
+              </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <label className="flex flex-col gap-2 text-sm">
                   <span className="font-bold uppercase text-tedx-muted-text">Full Name</span>
@@ -628,44 +759,72 @@ export default function RegisterPage() {
 
           {currentStep === 2 && (
             <section className="rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-5">
-              <h2 className="text-2xl font-bold uppercase">Step 2: Choose Ticket Type</h2>
-              <p className="mt-1 text-sm text-tedx-muted-text">
-                Choose one mode for this submission.
-              </p>
+              <div className="flex items-start gap-3">
+                <div className="mt-1 w-1 shrink-0 self-stretch rounded-full bg-tedx-accent" aria-hidden="true" />
+                <div>
+                  <h2 className="font-league-gothic text-3xl uppercase tracking-wide">Step 2: Choose Ticket Type</h2>
+                  <p className="mt-1 text-sm text-tedx-muted-text">Choose one mode for this submission.</p>
+                </div>
+              </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {/* Individual Ticket Card */}
                 <button
                   type="button"
                   onClick={() => {
                     setPurchaseMode("individual");
                     syncAttendeeCountToMode("individual");
                   }}
-                  className={`rounded-lg border p-4 text-left ${
+                  className={`relative overflow-hidden rounded-xl border-2 p-5 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent ${
                     purchaseMode === "individual"
-                      ? "border-tedx-accent bg-tedx-black"
-                      : "border-tedx-outline-strong bg-tedx-surface"
+                      ? "border-tedx-accent bg-tedx-black shadow-[0_0_20px_rgba(216,45,51,0.15)]"
+                      : "border-tedx-outline-strong bg-tedx-surface hover:border-tedx-accent/50"
                   }`}
                 >
-                  <p className="text-sm font-bold uppercase">Individual Ticket (1 Person)</p>
-                  <p className="mt-1 text-xs text-tedx-muted-text">
-                    For solo registration.
-                  </p>
+                  {purchaseMode === "individual" && (
+                    <span className="absolute right-3 top-3 rounded-full bg-tedx-accent px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                      Selected
+                    </span>
+                  )}
+                  <p className="font-league-gothic text-2xl uppercase tracking-wide">Individual</p>
+                  <p className="mt-0.5 text-xs uppercase text-tedx-muted-text">1 Person · Solo Registration</p>
+                  <div className="mt-4 space-y-1.5 border-t border-tedx-outline-strong pt-3">
+                    {(["student", "aman_scholar", "external"] as const).map((type) => (
+                      <div key={type} className="flex justify-between text-xs">
+                        <span className="text-tedx-muted-text">{pricing.participantLabels[type]}</span>
+                        <span className="font-bold text-tedx-white">{formatPhp(pricing.individual[type].unitPrice)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs text-tedx-muted-text">Price varies by participant type</p>
                 </button>
+
+                {/* Group of Three Card */}
                 <button
                   type="button"
                   onClick={() => {
                     setPurchaseMode("group_of_three");
                     syncAttendeeCountToMode("group_of_three");
                   }}
-                  className={`rounded-lg border p-4 text-left ${
+                  className={`relative overflow-hidden rounded-xl border-2 p-5 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent ${
                     purchaseMode === "group_of_three"
-                      ? "border-tedx-accent bg-tedx-black"
-                      : "border-tedx-outline-strong bg-tedx-surface"
+                      ? "border-tedx-accent bg-tedx-black shadow-[0_0_20px_rgba(216,45,51,0.15)]"
+                      : "border-tedx-outline-strong bg-tedx-surface hover:border-tedx-accent/50"
                   }`}
                 >
-                  <p className="text-sm font-bold uppercase">Group Ticket (3 People)</p>
-                  <p className="mt-1 text-xs text-tedx-muted-text">
-                    For you + 2 companions.
-                  </p>
+                  {purchaseMode === "group_of_three" && (
+                    <span className="absolute right-3 top-3 rounded-full bg-tedx-accent px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                      Selected
+                    </span>
+                  )}
+                  <p className="font-league-gothic text-2xl uppercase tracking-wide">Group of 3</p>
+                  <p className="mt-0.5 text-xs uppercase text-tedx-muted-text">3 People · You + 2 Companions</p>
+                  <div className="mt-4 rounded-md bg-tedx-accent/10 px-3 py-2.5 text-center">
+                    <p className="text-xs font-bold uppercase text-tedx-accent">
+                      {Math.round(pricing.groupOfThree.discountRate * 100)}% Discount Applied
+                    </p>
+                    <p className="mt-0.5 text-xs text-tedx-muted-text">Computed from individual rates</p>
+                  </div>
+                  <p className="mt-3 text-xs text-tedx-muted-text">Price computed per attendee type</p>
                 </button>
               </div>
             </section>
@@ -674,13 +833,16 @@ export default function RegisterPage() {
           {currentStep === 3 && (
             <section className="rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-5">
               <div className="flex items-center justify-between gap-3">
-                <div>
-                  <h2 className="text-2xl font-bold uppercase">Step 3: Attendee Details</h2>
-                  <p className="mt-1 text-sm text-tedx-muted-text">
-                    {purchaseMode === "individual"
-                      ? "Individual purchase: fill in your details only."
-                      : "Group purchase: fill in exactly 3 attendees."}
-                  </p>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 w-1 shrink-0 self-stretch rounded-full bg-tedx-accent" aria-hidden="true" />
+                  <div>
+                    <h2 className="font-league-gothic text-3xl uppercase tracking-wide">Step 3: Attendee Details</h2>
+                    <p className="mt-1 text-sm text-tedx-muted-text">
+                      {purchaseMode === "individual"
+                        ? "Individual purchase: fill in your details only."
+                        : "Group purchase: fill in exactly 3 attendees."}
+                    </p>
+                  </div>
                 </div>
                 <span className="rounded-md border border-tedx-outline-strong bg-tedx-black px-3 py-2 text-xs font-bold uppercase text-tedx-muted-text">
                   {purchaseMode === "individual" ? "1 attendee" : "3 attendees"}
@@ -693,19 +855,21 @@ export default function RegisterPage() {
                     key={`attendee-${attendeeIndex}`}
                     className="rounded-lg border border-tedx-outline-strong bg-tedx-black p-4"
                   >
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-xs font-bold uppercase text-tedx-muted-text">
-                        {attendeeIndex === 0 ? "Primary Attendee" : `Companion ${attendeeIndex}`}
-                      </p>
-                      {purchaseMode === "individual" && (
-                        <button
-                          type="button"
-                          onClick={() => removeAttendee(attendeeIndex)}
-                          className="text-xs font-bold uppercase text-tedx-accent hover:text-tedx-accent-hover"
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5">
+                        <span
+                          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
+                            attendeeIndex === 0
+                              ? "bg-tedx-accent text-white"
+                              : "border border-tedx-outline-strong bg-tedx-surface-deep text-tedx-muted-text"
+                          }`}
                         >
-                          Remove
-                        </button>
-                      )}
+                          {attendeeIndex + 1}
+                        </span>
+                        <p className="text-xs font-bold uppercase text-tedx-muted-text">
+                          {attendeeIndex === 0 ? "Primary Attendee" : `Companion ${attendeeIndex}`}
+                        </p>
+                      </div>
                     </div>
                     <div className="grid gap-3 sm:grid-cols-2">
                       <label className="flex flex-col gap-2 text-sm">
@@ -822,41 +986,48 @@ export default function RegisterPage() {
                 ))}
               </div>
 
-              <div className="mt-5 rounded-lg border border-tedx-outline-strong bg-tedx-black p-4">
-                <p className="text-xs font-bold uppercase text-tedx-muted-text">Price Summary</p>
-                <div className="mt-2 space-y-1">
+              <div className="mt-5 overflow-hidden rounded-xl border border-tedx-outline-strong bg-tedx-black">
+                <div className="flex items-center gap-2 border-b border-tedx-outline-strong bg-tedx-surface-deep px-4 py-2.5">
+                  <div className="h-1.5 w-1.5 rounded-full bg-tedx-accent" aria-hidden="true" />
+                  <p className="text-xs font-bold uppercase text-tedx-muted-text">Price Summary</p>
+                </div>
+                <div className="divide-y divide-tedx-outline-strong p-4">
                   {computedLines.map((line, index) => (
-                    <div
-                      key={`summary-${index}`}
-                      className="rounded-md border border-tedx-outline-strong bg-tedx-surface p-3 text-sm"
-                    >
-                      <p className="font-bold">{line.label}</p>
+                    <div key={`summary-${index}`} className="py-3 first:pt-0 last:pb-0">
+                      <p className="text-sm font-bold">{line.label}</p>
                       {line.purchaseMode === "group_of_three" && line.participantBreakdown && (
-                        <div className="mt-2 space-y-1 text-xs text-tedx-muted-text">
+                        <div className="mt-2 space-y-1.5 text-xs text-tedx-muted-text">
                           {line.participantBreakdown.map((item, itemIndex) => (
-                            <p key={`breakdown-${itemIndex}`}>
-                              {pricing.participantLabels[item.participantType]}:{" "}
-                              {formatPhp(item.unitPrice)}
-                            </p>
+                            <div key={`breakdown-${itemIndex}`} className="flex justify-between">
+                              <span>{pricing.participantLabels[item.participantType]}</span>
+                              <span>{formatPhp(item.unitPrice)}</span>
+                            </div>
                           ))}
-                          <p>Subtotal: {formatPhp(line.baseTotal ?? 0)}</p>
-                          <p>
-                            Discount ({Math.round((line.discountRate ?? 0) * 100)}%): -
-                            {formatPhp((line.baseTotal ?? 0) - line.lineTotal)}
-                          </p>
+                          <div className="flex justify-between">
+                            <span>Subtotal</span>
+                            <span>{formatPhp(line.baseTotal ?? 0)}</span>
+                          </div>
+                          <div className="flex justify-between text-tedx-accent">
+                            <span>Discount ({Math.round((line.discountRate ?? 0) * 100)}%)</span>
+                            <span>-{formatPhp((line.baseTotal ?? 0) - line.lineTotal)}</span>
+                          </div>
                         </div>
                       )}
-                      <p className="mt-2 font-bold text-tedx-accent">
-                        Total: {formatPhp(line.lineTotal)}
-                      </p>
+                      <div className="mt-2 flex justify-between text-sm">
+                        <span className="font-bold text-tedx-muted-text">Line Total</span>
+                        <span className="font-bold text-tedx-accent">{formatPhp(line.lineTotal)}</span>
+                      </div>
                     </div>
                   ))}
                 </div>
-                <p className="mt-3 text-sm font-bold uppercase text-tedx-accent">
-                  Total: {formatPhp(totalAmount)}
-                </p>
+                <div className="flex items-center justify-between border-t-2 border-tedx-accent bg-tedx-surface-deep px-4 py-3">
+                  <p className="text-sm font-bold uppercase text-tedx-white">Grand Total</p>
+                  <p className="font-league-gothic text-2xl uppercase tracking-wide text-tedx-accent">
+                    {formatPhp(totalAmount)}
+                  </p>
+                </div>
                 {hasIncompleteGroup && (
-                  <p className="mt-2 text-xs text-tedx-accent">
+                  <p className="border-t border-tedx-outline-strong px-4 py-2 text-xs text-tedx-accent">
                     Group purchase requires exactly 3 attendees.
                   </p>
                 )}
@@ -867,11 +1038,42 @@ export default function RegisterPage() {
           {currentStep === 4 && (
             <>
               <section className="space-y-4 rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-5">
-                <h2 className="text-2xl font-bold uppercase">Step 4: Payment</h2>
-                <p className="text-sm text-tedx-muted-text">
-                  Pay the exact amount shown in the summary using GCash, then upload proof of
-                  payment.
-                </p>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 w-1 shrink-0 self-stretch rounded-full bg-tedx-accent" aria-hidden="true" />
+                  <div>
+                    <h2 className="font-league-gothic text-3xl uppercase tracking-wide">Step 4: Payment</h2>
+                    <p className="mt-1 text-sm text-tedx-muted-text">Pay the exact amount shown in the summary using GCash, then upload proof of payment.</p>
+                  </div>
+                </div>
+                {/* Order summary */}
+                <div className="overflow-hidden rounded-xl border border-tedx-outline-strong bg-tedx-black">
+                  <div className="flex items-center gap-2 border-b border-tedx-outline-strong bg-tedx-surface-deep px-4 py-2.5">
+                    <div className="h-1.5 w-1.5 rounded-full bg-tedx-accent" aria-hidden="true" />
+                    <p className="text-xs font-bold uppercase text-tedx-muted-text">Order Summary</p>
+                  </div>
+                  <div className="divide-y divide-tedx-outline-strong px-4">
+                    {attendees.map((attendee, i) => (
+                      <div key={i} className="flex items-center justify-between gap-3 py-3 text-sm">
+                        <div>
+                          <p className="font-bold">{attendee.fullName || `Attendee ${i + 1}`}</p>
+                          <p className="text-xs text-tedx-muted-text">{pricing.participantLabels[attendee.participantType]}</p>
+                        </div>
+                        <p className="shrink-0 font-bold text-tedx-accent">
+                          {formatPhp(resolveIndividualLine(attendee.participantType).unitPrice)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between border-t-2 border-tedx-accent bg-tedx-surface-deep px-4 py-3">
+                    <p className="text-sm font-bold uppercase text-tedx-white">
+                      Total{purchaseMode === "group_of_three" ? ` (${Math.round(pricing.groupOfThree.discountRate * 100)}% group discount)` : ""}
+                    </p>
+                    <p className="font-league-gothic text-2xl uppercase tracking-wide text-tedx-accent">
+                      {formatPhp(totalAmount)}
+                    </p>
+                  </div>
+                </div>
+
                 <div className="w-full max-w-xs overflow-hidden rounded-xl border border-tedx-outline-strong bg-tedx-white p-3">
                   <Image
                     src="/gcash.png"
@@ -882,16 +1084,79 @@ export default function RegisterPage() {
                   />
                 </div>
                 <div>
-                  <label className="mb-2 block text-xs font-bold uppercase text-tedx-muted-text">
+                  <p className="mb-2 text-xs font-bold uppercase text-tedx-muted-text">
                     Upload Payment Proof
+                  </p>
+                  <label
+                    htmlFor="paymentProofInput"
+                    className={`group flex min-h-[140px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-6 text-center transition-colors ${
+                      proofFile
+                        ? "border-tedx-accent bg-tedx-accent/5"
+                        : getFieldError("paymentProof")
+                          ? "border-tedx-accent bg-tedx-accent/5"
+                          : "border-tedx-outline-strong bg-tedx-black hover:border-tedx-accent/50 hover:bg-tedx-surface"
+                    }`}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      onProofFileChange(e.dataTransfer.files?.[0] ?? null);
+                    }}
+                  >
+                    {proofFile ? (
+                      <>
+                        <img
+                          src={URL.createObjectURL(proofFile)}
+                          alt="Payment proof preview"
+                          className="max-h-32 max-w-full rounded-md object-contain"
+                        />
+                        <p className="text-xs text-tedx-muted-text">{proofFile.name}</p>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onProofFileChange(null);
+                          }}
+                          className="text-xs font-bold uppercase text-tedx-accent hover:text-tedx-accent-hover"
+                        >
+                          Remove
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className={`h-8 w-8 transition-colors ${
+                            getFieldError("paymentProof")
+                              ? "text-tedx-accent"
+                              : "text-tedx-muted-text group-hover:text-tedx-white"
+                          }`}
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <div>
+                          <p className="text-sm font-bold text-tedx-white">Drop your screenshot here</p>
+                          <p className="mt-0.5 text-xs text-tedx-muted-text">
+                            or click to browse · JPG, PNG, WEBP · max 5 MB
+                          </p>
+                        </div>
+                      </>
+                    )}
                   </label>
                   <input
-                    required
+                    id="paymentProofInput"
                     name="paymentProof"
                     type="file"
                     accept="image/*"
+                    className="sr-only"
                     onChange={(event) => onProofFileChange(event.target.files?.[0] ?? null)}
-                    className="block w-full text-sm"
                     aria-label="Upload payment proof"
                   />
                   {getFieldError("paymentProof") && (
@@ -904,16 +1169,20 @@ export default function RegisterPage() {
               </section>
 
               <section className="space-y-4 rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-5">
-                <h2 className="text-2xl font-bold uppercase">Additional Details</h2>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 w-1 shrink-0 self-stretch rounded-full bg-tedx-accent" aria-hidden="true" />
+                  <div>
+                    <h2 className="font-league-gothic text-3xl uppercase tracking-wide">Additional Details</h2>
+                  </div>
+                </div>
                 <div>
                   <p className="mb-2 text-sm font-bold uppercase">
                     How did you hear about the event?
                   </p>
                   <div className="grid gap-2 sm:grid-cols-2">
                     {hearAboutOptions.map((option) => (
-                      <label key={option.id} className="flex items-center gap-2 text-sm">
-                        <input
-                          type="checkbox"
+                      <label key={option.id} className="flex cursor-pointer items-center gap-2.5 text-sm">
+                        <StyledCheckbox
                           checked={hearAbout.includes(option.id)}
                           onChange={() => toggleHearAbout(option.id)}
                         />
@@ -922,30 +1191,22 @@ export default function RegisterPage() {
                     ))}
                   </div>
                 </div>
-                <input
-                  name="emergencyContact"
-                  autoComplete="off"
-                  value={emergencyContact}
-                  onChange={(event) => setEmergencyContact(event.target.value)}
-                  placeholder="Emergency contact (optional)…"
-                  className="w-full rounded-md border border-tedx-outline-strong bg-tedx-black px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent"
-                />
-                <label className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
+                <label className="flex cursor-pointer items-start gap-2.5 text-sm">
+                  <StyledCheckbox
                     checked={encourageFacebookFollow}
-                    onChange={(event) => setEncourageFacebookFollow(event.target.checked)}
+                    onChange={(checked) => setEncourageFacebookFollow(checked)}
                   />
-                  I will follow TEDxAteneodeManilaU on Facebook for event updates.
+                  <span>I will follow TEDxAteneodeManilaU on Facebook for event updates.</span>
                 </label>
-                <label className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
+                <label className="flex cursor-pointer items-start gap-2.5 text-sm">
+                  <StyledCheckbox
                     checked={dataPrivacyConsent}
-                    onChange={(event) => setDataPrivacyConsent(event.target.checked)}
-                    required
+                    onChange={(checked) => setDataPrivacyConsent(checked)}
                   />
-                  I agree to the collection and processing of my data for registration.
+                  <span className={dataPrivacyConsent ? "text-tedx-white" : "text-tedx-muted-text"}>
+                    I agree to the collection and processing of my data for registration.
+                    {!dataPrivacyConsent && <span className="ml-1 text-tedx-accent" aria-hidden="true">*</span>}
+                  </span>
                 </label>
                 {getFieldError("dataPrivacyConsent") && (
                   <p className="text-xs text-tedx-accent">{getFieldError("dataPrivacyConsent")}</p>
