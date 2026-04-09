@@ -11,15 +11,21 @@ function Door({
   number,
   isOpen,
   onClick,
+  compact,
 }: {
   number: number;
   isOpen: boolean;
   onClick: () => void;
+  compact?: boolean;
 }) {
+  const ratio = compact ? "3 / 4" : "250 / 470";
+  const xSize = compact ? "clamp(60px, 20vw, 100px)" : "clamp(150px, 34.7vw, 500px)";
+  const numSize = compact ? "14px" : "clamp(14px, 1.67vw, 24px)";
+
   return (
     <div
       className="relative w-full overflow-clip cursor-pointer"
-      style={{ aspectRatio: "250 / 470" }}
+      style={{ aspectRatio: ratio }}
       onClick={onClick}
     >
       {/* Wrapper — slides left to reveal behind-door content */}
@@ -58,22 +64,22 @@ function Door({
           style={{
             left: "calc(121.2% + 50%)",
             transform: "translateX(-50%)",
-            top: "7.02%",
-            fontSize: "clamp(14px, 1.67vw, 24px)",
+            top: "5%",
+            fontSize: numSize,
           }}
         >
           {number}
         </p>
 
         {/* ── Front face of door ── */}
-        <div className="absolute inset-0 bg-black" />
+        <div className="absolute inset-0 bg-black border border-tedx-outline-strong rounded-sm" />
         <div
           className="absolute flex items-center justify-center overflow-hidden"
-          style={{ inset: "10.85% 12.4%" }}
+          style={{ inset: "10% 10%" }}
         >
           <p
             className="font-display text-tedx-red opacity-70 text-center leading-none tracking-[-0.04em]"
-            style={{ fontSize: "clamp(150px, 34.7vw, 500px)" }}
+            style={{ fontSize: xSize }}
           >
             X
           </p>
@@ -81,10 +87,10 @@ function Door({
         <div
           className="absolute"
           style={{
-            top: "47.45%",
-            bottom: "47.45%",
-            right: "7.6%",
-            left: "82.8%",
+            top: "47%",
+            bottom: "47%",
+            right: "7%",
+            width: compact ? "8%" : "9.6%",
           }}
         >
           <img
@@ -96,8 +102,8 @@ function Door({
         <p
           className="absolute font-display text-[#991a04] text-center tracking-[-0.96px] whitespace-nowrap left-1/2 -translate-x-1/2"
           style={{
-            top: "7.02%",
-            fontSize: "clamp(14px, 1.67vw, 24px)",
+            top: "5%",
+            fontSize: numSize,
           }}
         >
           {number}
@@ -214,14 +220,24 @@ export default function SpeakersSection() {
         </div>
 
         {/* ── Mobile doors (< md) ────────────────────────────────── */}
-        <div className="md:hidden grid grid-cols-2 gap-4 mt-10 w-full max-w-[320px]">
+        <div className="md:hidden grid grid-cols-2 gap-5 mt-10 w-full max-w-[340px] mx-auto">
           {[1, 2, 3, 4].map((n) => (
-            <Door
+            <div
               key={n}
-              number={n}
-              isOpen={openDoor === n}
-              onClick={() => toggle(n)}
-            />
+              className="relative rounded-t-md overflow-hidden"
+              style={{
+                border: "3px solid #eb0028",
+                borderBottom: "6px solid #eb0028",
+                background: "#1a1a1a",
+              }}
+            >
+              <Door
+                number={n}
+                isOpen={openDoor === n}
+                onClick={() => toggle(n)}
+                compact
+              />
+            </div>
           ))}
         </div>
       </div>

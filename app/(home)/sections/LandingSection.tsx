@@ -12,11 +12,11 @@ export default function LandingSection() {
       id="landing"
       className="relative h-screen w-full bg-black overflow-hidden flex flex-col items-center justify-center"
     >
-      {/* Red trapezoid / perspective stage */}
+      {/* Red trapezoid / perspective stage — wider on mobile so it bleeds off edges */}
       <div
         aria-hidden="true"
-        className="absolute left-0 right-0 pointer-events-none"
-        style={{ top: "57%", height: "19.5%" }}
+        className="absolute pointer-events-none left-[-10%] right-[-10%] sm:left-0 sm:right-0"
+        style={{ top: "55%", height: "22%" }}
       >
         <img
           src="/landing/trapezoid.svg"
@@ -25,23 +25,23 @@ export default function LandingSection() {
         />
       </div>
 
-      {/* MOMENTUM heading */}
+      {/* MOMENTUM heading — big and dominant on all screens */}
       <h1
         className="relative z-20 font-display text-white text-center leading-none tracking-[-0.01em]"
         style={{
-          marginTop: "15vh",
-          fontSize: "clamp(5rem, 19.5vw, 24rem)",
+          marginTop: "5vh",
+          fontSize: "clamp(5.5rem, 19.5vw, 24rem)",
         }}
       >
         MOMENTUM
       </h1>
 
       {/* Subtitle with gradient text */}
-      <div className="relative z-20 text-center">
+      <div className="relative z-20 text-center mt-1">
         <p
           className="font-sans bg-clip-text text-transparent bg-cover bg-center tracking-[-0.09em]"
           style={{
-            fontSize: "clamp(1.5rem, 4.86vw, 70px)",
+            fontSize: "clamp(1.4rem, 4.86vw, 70px)",
             backgroundImage: "url('/landing/subtitle-bg.png')",
           }}
         >
@@ -49,23 +49,22 @@ export default function LandingSection() {
         </p>
       </div>
 
-      {/* Event details row */}
-      <div className="relative z-20 mt-6 flex flex-wrap items-center justify-center gap-6 sm:gap-8 px-4">
+      {/* Event details — stacked on mobile, row on desktop */}
+      <div className="relative z-20 mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 px-4">
         {eventDetails.map(({ icon, text }) => (
           <span
             key={text}
-            className="flex items-center gap-2 text-tedx-muted-text font-medium tracking-[-0.09em]"
-            style={{ fontSize: "clamp(0.75rem, 1.46vw, 21px)" }}
+            className="flex items-center gap-2 text-tedx-muted-text font-medium tracking-[-0.04em] text-sm sm:text-base"
           >
-            <Image src={icon} alt="" width={23} height={23} className="shrink-0" />
+            <Image src={icon} alt="" width={18} height={18} className="shrink-0 sm:w-[23px] sm:h-[23px]" />
             {text}
           </span>
         ))}
       </div>
 
       {/* Arrow icon — bottom right */}
-      <div className="absolute bottom-10 right-10 z-20 rotate-180">
-        <Image src="/landing/arrow.svg" alt="" width={39} height={39} />
+      <div className="absolute bottom-8 right-6 sm:bottom-10 sm:right-10 z-20 rotate-180">
+        <Image src="/landing/arrow.svg" alt="" width={30} height={30} className="sm:w-[39px] sm:h-[39px]" />
       </div>
     </section>
   );

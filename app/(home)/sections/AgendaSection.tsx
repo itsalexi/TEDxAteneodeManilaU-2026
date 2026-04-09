@@ -16,16 +16,16 @@ const schedule = [
 export default function AgendaSection() {
   return (
     <section id="agenda" className="w-full bg-black relative overflow-hidden">
-      {/* Background image */}
+      {/* Background SVG — full width, behind everything (desktop only) */}
       <div
-        className="absolute left-0 right-0 top-[6.4%] pointer-events-none"
-        style={{ aspectRatio: "1440 / 686.458" }}
+        className="hidden sm:block absolute left-0 right-0 top-[18%] pointer-events-none pb-10"
+        style={{ aspectRatio: "1440 / 686" }}
       >
-        <img src={imgBg} alt="" className="w-full h-full object-fill" />
+        <img src={imgBg} alt="" className="w-[100%] h-[90%]" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center px-4">
+      <div className="relative z-10 flex flex-col items-center px-4 py-8 sm:pt-20 sm:pb-60">
         {/* Heading */}
         <h2
           className="font-display text-white text-center leading-none tracking-[-0.04em]"
@@ -38,18 +38,26 @@ export default function AgendaSection() {
         </h2>
 
         {/* Schedule table */}
-        <div className="mt-[clamp(1rem,5vw,20px)] w-full max-w-[665px] flex flex-col gap-1">
-          {schedule.map(({ event, time }) => (
-            <div
-              key={event}
-              className="flex items-center gap-2.5 font-bold leading-[36px]"
-              style={{ fontSize: "clamp(16px, 1.94vw, 28px)" }}
-            >
-              <p className="flex-1 text-right text-white">{event}</p>
-              <p className="w-[52px] text-center text-tedx-red shrink-0">X</p>
-              <p className="flex-1 text-left text-white">{time}</p>
-            </div>
-          ))}
+        <div className="relative mt-[clamp(1rem,5vw,20px)] w-full max-w-[665px] sm:max-w-[46%]">
+          {/* Mobile bg */}
+          <div
+            className="sm:hidden absolute inset-x-[-4%] inset-y-[-4%] pointer-events-none bg-tedx-surface-muted border-x-2 border-tedx-red"
+          />
+
+          {/* Schedule rows */}
+          <div className="relative flex flex-col gap-1 py-2 sm:pt-10 sm:pb-5">
+            {schedule.map(({ event, time }) => (
+              <div
+                key={event}
+                className="flex items-center gap-1.5 sm:gap-2.5 font-bold leading-[28px] sm:leading-[32px]"
+                style={{ fontSize: "clamp(13px, 1.5vw, 22px)" }}
+              >
+                <p className="flex-1 text-right text-white">{event}</p>
+                <p className="w-[30px] sm:w-[52px] text-center text-tedx-red shrink-0">X</p>
+                <p className="flex-1 text-left text-white">{time}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

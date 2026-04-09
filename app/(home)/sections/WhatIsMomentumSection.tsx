@@ -1,8 +1,8 @@
 export default function WhatIsMomentumSection() {
   return (
     <section id="what-is-momentum" className="relative w-full bg-black overflow-hidden">
-      {/* Left atmospheric background */}
-      <div className="absolute inset-y-0 left-[-19%] w-[45%] opacity-70 pointer-events-none">
+      {/* Left atmospheric background — bleeds wider on mobile for immersion */}
+      <div className="absolute inset-y-0 left-[-40%] sm:left-[-19%] w-[70%] sm:w-[45%] opacity-70 pointer-events-none">
         <img
           src="/momentum/bg-left.png"
           alt=""
@@ -10,8 +10,8 @@ export default function WhatIsMomentumSection() {
         />
       </div>
 
-      {/* Right atmospheric background */}
-      <div className="absolute top-[-5%] right-[-10%] w-[42%] h-[110%] opacity-70 pointer-events-none">
+      {/* Right atmospheric background — bleeds wider on mobile */}
+      <div className="absolute top-[-5%] right-[-20%] sm:right-[-10%] w-[60%] sm:w-[42%] h-[110%] opacity-70 pointer-events-none">
         <img
           src="/momentum/bg-right.png"
           alt=""
@@ -21,24 +21,24 @@ export default function WhatIsMomentumSection() {
       </div>
 
       {/* Top fade */}
-      <div className="absolute top-0 inset-x-0 h-[120px] pointer-events-none z-10 bg-gradient-to-b from-black to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-[80px] sm:h-[120px] pointer-events-none z-10 bg-gradient-to-b from-black to-transparent" />
 
       {/* Bottom fade */}
-      <div className="absolute bottom-0 inset-x-0 h-[120px] pointer-events-none z-10 bg-gradient-to-t from-black to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-[80px] sm:h-[120px] pointer-events-none z-10 bg-gradient-to-t from-black to-transparent" />
 
       {/* Main content */}
-      <div className="relative z-10 py-24 md:py-32 px-6">
-        <div className="mx-auto max-w-2xl flex flex-col gap-16">
+      <div className="relative z-10 py-14 sm:py-20 md:py-32 px-5 sm:px-6">
+        <div className="mx-auto max-w-2xl flex flex-col gap-10 md:gap-16">
           {/* Heading */}
           <h2
             className="font-display text-white text-center leading-none tracking-[-0.04em] drop-shadow-[0px_4px_25px_rgba(0,0,0,0.35)]"
-            style={{ fontSize: "clamp(3rem,8vw,8rem)" }}
+            style={{ fontSize: "clamp(3.2rem,10vw,8rem)" }}
           >
             WHAT IS <span className="text-tedx-red">MOMENTUM</span>?
           </h2>
 
           {/* Body copy */}
-          <div className="font-sans text-base text-white space-y-6 leading-[25px]">
+          <div className="font-sans text-[15px] sm:text-base text-white space-y-5 sm:space-y-6 leading-[23px] sm:leading-[25px]">
             <p>
               <strong className="text-tedx-red font-bold">Momentum is</strong>{" "}
               more than speed. It is the tension between stillness and motion, between holding on

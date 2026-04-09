@@ -13,7 +13,15 @@
       "Bash(curl -sL -o watch-trailer.png \"https://www.figma.com/api/mcp/asset/8115b4be-e3b3-4fea-b869-d234f3325b66\")",
       "Bash(curl -sL -o bg-left.png \"https://www.figma.com/api/mcp/asset/7b51e523-6106-4b92-a074-09bdd41d64fa\")",
       "Bash(curl -sL -o bg-right.png \"https://www.figma.com/api/mcp/asset/c8507494-110c-4817-8575-86c42086a868\")",
-      "Bash(file /Users/jjpardo/Documents/TEDxAteneodeManilaU-2026/public/momentum/*.png)"
+      "Bash(file /Users/jjpardo/Documents/TEDxAteneodeManilaU-2026/public/momentum/*.png)",
+      "Bash(curl -sL -o crowd.png \"https://www.figma.com/api/mcp/asset/b439dfc6-f82a-48d9-82a5-841cfb0d81c1\")",
+      "Bash(curl -sL -o path.png \"https://www.figma.com/api/mcp/asset/a3aabc44-c319-4669-887c-016f50c501cb\")",
+      "Bash(curl -sL -o red-person.png \"https://www.figma.com/api/mcp/asset/286db872-56ed-4460-af5c-1fda7f9f344a\")",
+      "Bash(curl -sL -o chat-bubble-tail.png \"https://www.figma.com/api/mcp/asset/d15e6584-92d3-4cf5-9484-1a3612b0e826\")",
+      "Bash(curl -sL -o chat-bubble-dots.png \"https://www.figma.com/api/mcp/asset/3f98fdbf-8655-4743-9e9a-7d869f80685f\")",
+      "Bash(curl -sL -o bottom-fade.png \"https://www.figma.com/api/mcp/asset/a4c061df-1a33-4071-b4e4-ebbb97805067\")",
+      "Bash(curl -sL -o arrow.png \"https://www.figma.com/api/mcp/asset/7cd58235-ebb9-42fe-a947-626e3c7fe558\")",
+      "Bash(file /Users/jjpardo/Documents/TEDxAteneodeManilaU-2026/public/about/tedx/*)"
     ]
   }
 }
