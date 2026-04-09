@@ -264,7 +264,7 @@
             {/* "find which talk is for you" — moves up on hover, turns white on active */}
             <div className="absolute flex items-center justify-center transition-all duration-300 ease-out
                             top-[20.07%] right-[20.67%] bottom-[22.8%] left-[15.02%]
-                            group-hover/quiz:top-[11.2%] group-hover/quiz:bottom-[31.68%]">
+                            group-hover/quiz:top-[5%] group-hover/quiz:right-[23%] group-hover/quiz:left-[9%] group-hover/quiz:bottom-[37.88%]">
               <div style={{ flexShrink: 0, width: v(290), height: v(132), transform: "rotate(-31deg) skewX(30deg) scaleY(0.87)" }}>
                 <p className="font-display text-center whitespace-pre leading-tight
                               transition-colors duration-300
@@ -276,7 +276,7 @@
             {/* Arrow — grows on hover, swaps to white on active */}
             <div className="absolute transition-all duration-300 ease-out
                             top-[81.53%] right-[54.06%] bottom-[17.27%] left-[44.88%]
-                            group-hover/quiz:top-[34.81%] group-hover/quiz:right-[15.55%] group-hover/quiz:bottom-[24.1%] group-hover/quiz:left-[44.96%]">
+                            group-hover/quiz:top-[38.81%] group-hover/quiz:right-[13.55%] group-hover/quiz:bottom-[20.1%] group-hover/quiz:left-[46.96%]">
               {/* Default arrow */}
               <img src={imgQuizArrow} alt="" className="w-full h-full object-contain
                           transition-opacity duration-300 opacity-100 group-hover/quiz:opacity-0" />
