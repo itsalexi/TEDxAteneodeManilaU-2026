@@ -6,34 +6,34 @@ type LeaderCard = {
 
 const leaders: LeaderCard[] = [
   {
-    name: "LOREM IPSUM",
+    name: "Liza Aquino",
     role: "PROJECT SUPERVISOR",
-    description: "Phasellus imperdiet auctor aliquet. Mauris non consequat ipsum.",
+    description: "A 3rd year BS Management student, driven to cultivate individual talents and yield success.",
   },
   {
-    name: "LOREM IPSUM",
+    name: "Andy Balatbat",
     role: "PROJECT SUPERVISOR",
-    description: "Phasellus imperdiet auctor aliquet. Mauris non consequat ipsum.",
+    description: "A 4th year BS Management student who aspires to contribute to the community through fruitful projects.",
   },
   {
-    name: "LOREM IPSUM",
-    role: "PROJECT SUPERVISOR",
-    description: "Phasellus imperdiet auctor aliquet. Mauris non consequat ipsum.",
+    name: "Bri Sy",
+    role: "Project Head for Advertising and Communications",
+    description: "A third year BS CTM student with a passion for bridging stories and strategy.",
   },
   {
-    name: "LOREM IPSUM",
+    name: "Vonn Puga",
     role: "PROJECT SUPERVISOR",
-    description: "Phasellus imperdiet auctor aliquet. Mauris non consequat ipsum.",
+    description: "A 3rd year Management student, the mind behind this year’s branding, talks, and themes—leading to inspire through stories that spark change, one future leader at a time.",
   },
   {
-    name: "LOREM IPSUM",
-    role: "PROJECT SUPERVISOR",
-    description: "Phasellus imperdiet auctor aliquet. Mauris non consequat ipsum.",
+    name: "Joseph Antes",
+    role: "Project Head for Programs",
+    description: "A 2nd year BS Psychology student who aims to spread meaningful stories and spark new ideas.",
   },
   {
-    name: "LOREM IPSUM",
-    role: "PROJECT SUPERVISOR",
-    description: "Phasellus imperdiet auctor aliquet. Mauris non consequat ipsum.",
+    name: "Rynne Barrios",
+    role: "Project Head for Logistics",
+    description: "A third year BS Management student, with a desire to embrace challenges and pressure.",
   },
 ];
 
