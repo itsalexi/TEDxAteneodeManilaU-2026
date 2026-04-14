@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { formatPhp } from "@/lib/ticketPricing";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import AdminShell from "../components/AdminShell";
 
 type RegistrationRecord = {
   _id: Id<"registrations">;
@@ -174,8 +175,10 @@ export default function AdminRegistrationsPage() {
   const [search, setSearch] = useState("");
   const [syncState, setSyncState] = useState<"idle" | "syncing" | "success" | "error">("idle");
   const [syncMessage, setSyncMessage] = useState("");
+  const [isDeletingRegistration, setIsDeletingRegistration] = useState(false);
 
   const updateRegistrationStatus = useMutation(api.registrations.updateRegistrationStatus);
+  const deleteRegistration = useMutation(api.registrations.deleteRegistration);
   const syncToSheets = useAction(api.syncSheets.syncToGoogleSheets);
 
   const selectedRegistration = useQuery(
@@ -269,13 +272,32 @@ export default function AdminRegistrationsPage() {
     }
   };
 
+  const handleDeleteRegistration = async () => {
+    if (!selectedRegistration) return;
+    const confirmed = window.confirm(
+      `Delete registration ${selectedRegistration.referenceCode ?? selectedRegistration._id}? This cannot be undone.`,
+    );
+    if (!confirmed) return;
+
+    try {
+      setIsDeletingRegistration(true);
+      setErrorMessage("");
+      await deleteRegistration({ registrationId: selectedRegistration._id });
+      setSelectedId("");
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Unable to delete registration.");
+    } finally {
+      setIsDeletingRegistration(false);
+    }
+  };
+
   // ---------------------------------------------------------------------------
   // Auth states
   // ---------------------------------------------------------------------------
 
   if (isLoading) {
     return (
-      <section className="bg-tedx-black px-4 py-12 text-tedx-white sm:px-6 lg:px-8">
+      <section className="min-h-[100dvh] bg-tedx-black px-4 pb-16 pt-28 text-tedx-white sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
         <div className="mx-auto w-full max-w-4xl rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-6">
           <p className="text-sm text-tedx-muted-text">Checking authentication…</p>
         </div>
@@ -285,7 +307,7 @@ export default function AdminRegistrationsPage() {
 
   if (!isAuthenticated) {
     return (
-      <section className="bg-tedx-black px-4 py-12 text-tedx-white sm:px-6 lg:px-8">
+      <section className="min-h-[100dvh] bg-tedx-black px-4 pb-16 pt-28 text-tedx-white sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
         <div className="mx-auto w-full max-w-4xl rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-6">
           <p className="text-sm text-tedx-muted-text">
             You need to sign in with Google to access this page.
@@ -307,38 +329,38 @@ export default function AdminRegistrationsPage() {
   // ---------------------------------------------------------------------------
 
   return (
-    <section className="bg-tedx-black px-4 py-12 text-tedx-white sm:px-6 lg:px-8">
-      <div className="mx-auto w-full max-w-7xl rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-6 sm:p-8">
-
-        {/* Header */}
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h1 className="font-league-gothic text-5xl uppercase tracking-wide sm:text-6xl">
-              Admin Registrations
-            </h1>
-            <p className="mt-1 text-sm text-tedx-muted-text">
-              Protected by Convex authentication and admin checks.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              disabled={!registrations || registrations.length === 0}
-              onClick={() => exportCSV(registrations ?? [])}
-              className="rounded-md border border-tedx-outline-strong px-3 py-2 text-xs font-bold uppercase hover:border-tedx-accent disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Export CSV
-            </button>
-            <button
-              type="button"
-              disabled={syncState === "syncing"}
-              onClick={() => void handleSync()}
-              className="rounded-md bg-tedx-accent px-3 py-2 text-xs font-bold uppercase hover:bg-tedx-accent-hover disabled:cursor-not-allowed disabled:bg-tedx-disabled"
-            >
-              {syncState === "syncing" ? "Syncing…" : "Sync to Google Sheets"}
-            </button>
-          </div>
-        </div>
+    <AdminShell
+      title="Admin Registrations"
+      description="Protected by Convex authentication and admin checks."
+      actions={
+        <>
+          <button
+            type="button"
+            disabled={!registrations || registrations.length === 0}
+            onClick={() => exportCSV(registrations ?? [])}
+            className="rounded-md border border-tedx-outline-strong px-3 py-2 text-xs font-bold uppercase hover:border-tedx-accent disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Export CSV
+          </button>
+          <button
+            type="button"
+            disabled={syncState === "syncing"}
+            onClick={() => void handleSync()}
+            className="rounded-md bg-tedx-accent px-3 py-2 text-xs font-bold uppercase hover:bg-tedx-accent-hover disabled:cursor-not-allowed disabled:bg-tedx-disabled"
+          >
+            {syncState === "syncing" ? "Syncing…" : "Sync to Google Sheets"}
+          </button>
+          <a
+            href="https://docs.google.com/spreadsheets/d/17L7pViElIxl8wRKvmWujL3O7gYRCGpV1RcHXdAE6JrU/edit"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-md border border-tedx-outline-strong px-3 py-2 text-xs font-bold uppercase hover:border-tedx-accent"
+          >
+            Open Google Sheet
+          </a>
+        </>
+      }
+    >
 
         {/* Sync feedback */}
         {syncMessage && (
@@ -561,6 +583,14 @@ export default function AdminRegistrationsPage() {
                       >
                         Mark as Pending
                       </button>
+                      <button
+                        type="button"
+                        disabled={isDeletingRegistration}
+                        onClick={() => void handleDeleteRegistration()}
+                        className="rounded-md border border-tedx-accent px-3 py-2 text-xs font-bold uppercase text-tedx-accent hover:bg-tedx-accent hover:text-tedx-white disabled:cursor-not-allowed disabled:border-tedx-disabled disabled:text-tedx-disabled-text"
+                      >
+                        {isDeletingRegistration ? "Deleting…" : "Delete Registration"}
+                      </button>
                     </div>
                   </div>
 
@@ -689,7 +719,6 @@ export default function AdminRegistrationsPage() {
 
           </div>
         )}
-      </div>
-    </section>
+    </AdminShell>
   );
 }
