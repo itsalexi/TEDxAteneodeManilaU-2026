@@ -1,13 +1,157 @@
+"use client";
+
+import { useState } from "react";
 import Reveal from "@/app/components/Reveal";
 
-export default function FaqSection() {
+function ChevronDownIcon() {
   return (
-    <section id="faq" className="w-full bg-black py-16">
-      <div className="container mx-auto px-4">
-        <Reveal variant="fade-up">
-          <h2 className="text-4xl font-bold">FAQS</h2>
+    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden="true">
+      <path
+        d="M6 9l6 7 6-7"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="square"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden="true">
+      <path
+        d="M7 7l10 10M17 7L7 17"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="square"
+      />
+    </svg>
+  );
+}
+
+const faqItems = [
+  {
+    question: "When and where will the event take place?",
+    answer:
+    "The event will take place on April 25 (Saturday), from 1:00 PM to 4:00 PM, at UP Town Center Cinemas.",
+  },
+  {
+    question: "Who can attend the event?",
+    answer:
+    "The event is open to everyone. All are welcome to join and be part of the experience.",
+  },
+  {
+    question: "What should I expect during the event?",
+    answer:
+    "TEDxAteneo de Manila U features a dynamic lineup of speakers, interactive activities, concessionaires, and performances. Participants can explore booths, listen to talks from individuals across various fields, enjoy performances by local artists, and engage in meaningful discussions centered on the theme Momentum.",
+  },
+  {
+    question: "Will the event be livestreamed or recorded?",
+    answer:
+    "The event will not be livestreamed. However, the talks will be recorded and submitted to TEDx for possible publication.",
+  },
+  {
+    question: "What is the theme of this event?",
+    answer:
+      "This year’s theme is TEDxAteneodeManilaU: Momentum. Momentum is more than speed—it is the tension between stillness and motion, between holding on and letting go. It reflects the paradox that drives us forward: the more we strive, the more we risk emptiness; the more we stay content, the more we risk complacency.",
+  },
+  {
+    question: "Is TEDxAteneo de Manila U an organization?",
+    answer:
+      "TEDxAteneo de Manila U is not currently an independent organization within Ateneo de Manila University. It operates under the Ateneo Management Association (AMA), the premier entrepreneurship organization of the university. AMA is home to students pursuing BS Management, BS Management-Honors, and Management minors, and is one of the largest organizations within the Business Cluster of the Council of Organizations.",
+  },
+];
+
+export default function FaqSection() {
+  const [openIndex, setOpenIndex] = useState<number>(0);
+
+  const toggleItem = (index: number) => {
+    setOpenIndex((current) => (current === index ? -1 : index));
+  };
+
+  return (
+    <section
+      id="faq"
+      className="w-full bg-black px-6 py-12 md:px-[120px] md:py-[68px]"
+    >
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-10 md:flex-row md:items-start md:justify-between md:gap-12">
+        <Reveal variant="fade-left" className="flex shrink-0 flex-col items-start gap-[10px] md:w-[640px] md:pt-4">
+          <h2
+            className="font-display leading-none tracking-[-0.04em] text-white"
+            style={{
+              fontSize: "clamp(3.4rem, 7.2vw, 150px)",
+              textShadow: "0 4px 25px rgba(0,0,0,.35)",
+            }}
+          >
+            FREQUENTLY
+            <br />
+            <span className="text-tedx-red">X</span>SKED QUESTION<span className="text-tedx-red">X</span>
+          </h2>
         </Reveal>
-        {/* Content goes here */}
+        <Reveal variant="fade-up" delay={0.1} className="w-full md:max-w-[720px]">
+          <div className="flex flex-col gap-5">
+            {faqItems.map((item, index) => {
+              const isOpen = openIndex === index;
+
+              return (
+                <article
+                  key={item.question}
+                  className="rounded-[16px] border border-tedx-outline-strong bg-tedx-surface-muted px-6 py-7 md:px-7 md:py-8"
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleItem(index)}
+                    className="flex w-full items-center justify-between gap-4 text-left"
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-panel-${index}`}
+                  >
+                    <h3 className="text-[18px] font-semibold leading-tight text-tedx-white">
+                      {item.question}
+                    </h3>
+                    <span
+                      className={`inline-flex shrink-0 items-center justify-center ${
+                        isOpen ? "text-tedx-red" : "text-tedx-muted-text"
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <span className="relative inline-flex h-6 w-6 items-center justify-center">
+                        <span
+                          className={`absolute transition-all duration-300 ease-out ${
+                            isOpen ? "scale-75 opacity-0" : "scale-100 opacity-100"
+                          }`}
+                        >
+                          <ChevronDownIcon />
+                        </span>
+                        <span
+                          className={`absolute transition-all duration-300 ease-out ${
+                            isOpen ? "scale-100 opacity-100" : "scale-75 opacity-0"
+                          }`}
+                        >
+                          <CloseIcon />
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+
+                  <div
+                    id={`faq-panel-${index}`}
+                    className={`grid overflow-hidden transition-all duration-300 ease-out ${
+                      isOpen ? "mt-7 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
+                    }`}
+                    aria-hidden={!isOpen}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="max-w-[1000px] text-[16px] leading-[1.45] text-tedx-muted-text">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </Reveal>
       </div>
     </section>
   );
