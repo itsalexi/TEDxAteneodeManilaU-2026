@@ -4,15 +4,16 @@ const imgBg = "/agenda/bg.svg";
 
 const schedule = [
   { event: "Registration", time: "12:00 PM" },
-  { event: "Opening Ceremony", time: "12:00 PM" },
-  { event: "Welcome Speech", time: "12:00 PM" },
-  { event: "Talk 1", time: "12:00 PM" },
-  { event: "Talk 2", time: "12:00 PM" },
-  { event: "Lunch Break", time: "12:00 PM" },
-  { event: "Talk 3", time: "12:00 PM" },
-  { event: "Talk 4", time: "12:00 PM" },
-  { event: "Vote of Thanks", time: "12:00 PM" },
-  { event: "Closing Ceremony", time: "12:00 PM" },
+  { event: "Opening Remarks", time: "1:00 PM" },
+  { event: "Topic 1: Mind in Motion", time: "1:25 PM" },
+  { event: "Performance 1", time: "1:45 PM" },
+  { event: "Topic 2: The Dark Momentum", time: "2:00 PM" },
+  { event: "Break", time: "2:20 PM" },
+  { event: "Topic 3: Self-Momentum", time: "2:50 PM" },
+  { event: "Performance 2", time: "3:10 PM" },
+  { event: "Topic 4: Momentum's Mirror", time: "3:25 PM" },
+  { event: "Performance 3", time: "3:45 PM" },
+  { event: "Closing Remarks", time: "4:00 PM" },
 ];
 
 export default function AgendaSection() {
