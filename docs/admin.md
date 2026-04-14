@@ -45,12 +45,43 @@
 - **Args:** `registrationId`, `status` (`submitted` or `verified`)
 - **Returns:** `{ ok: true }`
 
+### `registrations:deleteRegistration`
+
+- **Type:** Mutation
+- **Auth required:** Convex Auth session + Convex `assertAdmin`
+- **Args:** `registrationId`
+- **Returns:** `{ ok: true }`
+- **Behavior:** Permanently deletes the selected registration from the `registrations` table.
+
 ### `admins:syncAdminEmails`
 
 - **Type:** Mutation
 - **Auth required:** Run via local script/workflow (`npm run sync:admins`)
 - **Args:** none
 - **Behavior:** Reconciles Convex `admins` table to `ADMIN_EMAILS` from env (adds missing, removes stale).
+
+### `admins:listAdmins`
+
+- **Type:** Query
+- **Auth required:** Convex Auth session + Convex `assertAdmin`
+- **Args:** none
+- **Returns:** All admin rows from the `admins` table (email + id).
+
+### `admins:addAdmin`
+
+- **Type:** Mutation
+- **Auth required:** Convex Auth session + Convex `assertAdmin`
+- **Args:** `email`
+- **Returns:** `{ ok: true, id, alreadyExists }`
+- **Behavior:** Adds a normalized email to `admins` if it does not already exist.
+
+### `admins:removeAdmin`
+
+- **Type:** Mutation
+- **Auth required:** Convex Auth session + Convex `assertAdmin`
+- **Args:** `adminId`
+- **Returns:** `{ ok: true }`
+- **Behavior:** Removes an admin row from `admins`.
 
 ## Required environment variables
 

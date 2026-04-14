@@ -174,8 +174,16 @@ export default function AdminRegistrationsPage() {
   const [search, setSearch] = useState("");
   const [syncState, setSyncState] = useState<"idle" | "syncing" | "success" | "error">("idle");
   const [syncMessage, setSyncMessage] = useState("");
+  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [adminMessage, setAdminMessage] = useState("");
+  const [isSavingAdmin, setIsSavingAdmin] = useState(false);
+  const [isDeletingRegistration, setIsDeletingRegistration] = useState(false);
 
   const updateRegistrationStatus = useMutation(api.registrations.updateRegistrationStatus);
+  const deleteRegistration = useMutation(api.registrations.deleteRegistration);
+  const admins = useQuery(api.admins.listAdmins, isAuthenticated ? {} : "skip");
+  const addAdmin = useMutation(api.admins.addAdmin);
+  const removeAdmin = useMutation(api.admins.removeAdmin);
   const syncToSheets = useAction(api.syncSheets.syncToGoogleSheets);
 
   const selectedRegistration = useQuery(
@@ -269,6 +277,54 @@ export default function AdminRegistrationsPage() {
     }
   };
 
+  const handleAddAdmin = async () => {
+    const email = newAdminEmail.trim().toLowerCase();
+    if (!email) return;
+    try {
+      setIsSavingAdmin(true);
+      setAdminMessage("");
+      const result = await addAdmin({ email });
+      setAdminMessage(result.alreadyExists ? "Admin already exists." : "Admin added.");
+      setNewAdminEmail("");
+    } catch (error) {
+      setAdminMessage(error instanceof Error ? error.message : "Failed to add admin.");
+    } finally {
+      setIsSavingAdmin(false);
+    }
+  };
+
+  const handleRemoveAdmin = async (adminId: Id<"admins">) => {
+    try {
+      setIsSavingAdmin(true);
+      setAdminMessage("");
+      await removeAdmin({ adminId });
+      setAdminMessage("Admin removed.");
+    } catch (error) {
+      setAdminMessage(error instanceof Error ? error.message : "Failed to remove admin.");
+    } finally {
+      setIsSavingAdmin(false);
+    }
+  };
+
+  const handleDeleteRegistration = async () => {
+    if (!selectedRegistration) return;
+    const confirmed = window.confirm(
+      `Delete registration ${selectedRegistration.referenceCode ?? selectedRegistration._id}? This cannot be undone.`,
+    );
+    if (!confirmed) return;
+
+    try {
+      setIsDeletingRegistration(true);
+      setErrorMessage("");
+      await deleteRegistration({ registrationId: selectedRegistration._id });
+      setSelectedId("");
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Unable to delete registration.");
+    } finally {
+      setIsDeletingRegistration(false);
+    }
+  };
+
   // ---------------------------------------------------------------------------
   // Auth states
   // ---------------------------------------------------------------------------
@@ -359,6 +415,62 @@ export default function AdminRegistrationsPage() {
             {errorMessage}
           </div>
         )}
+
+        {/* Admin management */}
+        <div className="mt-6 rounded-xl border border-tedx-outline-strong bg-tedx-black p-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-wide text-tedx-white">
+                Admin Access
+              </h2>
+              <p className="mt-1 text-xs text-tedx-muted-text">
+                Add or remove admins for this panel.
+              </p>
+            </div>
+            <div className="flex w-full max-w-md gap-2">
+              <input
+                type="email"
+                value={newAdminEmail}
+                onChange={(e) => setNewAdminEmail(e.target.value)}
+                placeholder="new-admin@email.com"
+                className="min-w-0 flex-1 rounded-md border border-tedx-outline-strong bg-tedx-surface-deep px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent"
+              />
+              <button
+                type="button"
+                disabled={isSavingAdmin || !newAdminEmail.trim()}
+                onClick={() => void handleAddAdmin()}
+                className="rounded-md bg-tedx-accent px-3 py-2 text-xs font-bold uppercase hover:bg-tedx-accent-hover disabled:cursor-not-allowed disabled:bg-tedx-disabled"
+              >
+                Add Admin
+              </button>
+            </div>
+          </div>
+          {adminMessage && (
+            <p className="mt-2 text-xs text-tedx-muted-text">{adminMessage}</p>
+          )}
+          <div className="mt-3 flex flex-wrap gap-2">
+            {(admins ?? []).map((admin) => (
+              <div
+                key={admin._id}
+                className="inline-flex items-center gap-2 rounded-full border border-tedx-outline-strong bg-tedx-surface-deep px-3 py-1.5 text-xs"
+              >
+                <span>{admin.email}</span>
+                <button
+                  type="button"
+                  onClick={() => void handleRemoveAdmin(admin._id)}
+                  disabled={isSavingAdmin}
+                  className="text-tedx-accent hover:text-tedx-accent-hover disabled:cursor-not-allowed disabled:text-tedx-disabled-text"
+                  aria-label={`Remove admin ${admin.email}`}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+            {admins && admins.length === 0 && (
+              <p className="text-xs text-tedx-muted-text">No admins in table yet.</p>
+            )}
+          </div>
+        </div>
 
         {/* Stats — row 1 */}
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -560,6 +672,14 @@ export default function AdminRegistrationsPage() {
                         className="rounded-md border border-tedx-outline-strong px-3 py-2 text-xs font-bold uppercase disabled:cursor-not-allowed disabled:text-tedx-disabled-text"
                       >
                         Mark as Pending
+                      </button>
+                      <button
+                        type="button"
+                        disabled={isDeletingRegistration}
+                        onClick={() => void handleDeleteRegistration()}
+                        className="rounded-md border border-tedx-accent px-3 py-2 text-xs font-bold uppercase text-tedx-accent hover:bg-tedx-accent hover:text-tedx-white disabled:cursor-not-allowed disabled:border-tedx-disabled disabled:text-tedx-disabled-text"
+                      >
+                        {isDeletingRegistration ? "Deleting…" : "Delete Registration"}
                       </button>
                     </div>
                   </div>

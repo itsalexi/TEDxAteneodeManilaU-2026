@@ -293,3 +293,19 @@ export const updateRegistrationStatus = mutationGeneric({
     return { ok: true };
   },
 });
+
+export const deleteRegistration = mutationGeneric({
+  args: {
+    registrationId: v.id("registrations"),
+  },
+  handler: async (ctx, args) => {
+    await assertAdmin(ctx);
+    const existing = await ctx.db.get(args.registrationId);
+    if (!existing) {
+      throw new Error("Registration not found.");
+    }
+
+    await ctx.db.delete(args.registrationId);
+    return { ok: true };
+  },
+});
