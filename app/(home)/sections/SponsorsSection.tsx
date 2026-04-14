@@ -31,27 +31,31 @@ export default function SponsorsSection() {
           delay={0.12}
           className="mt-8 w-full rounded-[36px] border-2 border-tedx-red md:mt-10"
         >
-          <div className="flex min-h-[420px] w-full flex-col items-center justify-center gap-12 px-6 py-14 md:min-h-[760px] md:gap-16 md:px-12">
-            <div className="flex w-full items-center justify-center">
-              <div className="relative h-[88px] w-[320px] md:h-[128px] md:w-[760px]">
-                <NextImage
-                  src="/Megawide.png"
-                  alt="Megawide Foundation"
-                  fill
-                  priority
-                  className="object-contain"
-                />
+          <div className="flex w-full items-start justify-center px-6 py-14 md:px-12 md:py-16">
+            <div className="grid w-full max-w-[550px] grid-cols-1 items-center justify-items-center gap-6 md:grid-cols-[minmax(0,1.55fr)_minmax(0,0.85fr)] md:gap-3 md:pt-4">
+              <div className="flex w-full items-center justify-center md:justify-start">
+                <div className="relative aspect-square w-60 max-w-[250px] md:max-w-[320px]">
+                  <NextImage
+                    src="/Megawide.png"
+                    alt="Megawide Foundation"
+                    fill
+                    priority
+                    unoptimized
+                    className="object-contain object-center"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="flex w-full items-center justify-center">
-              <div className="relative h-[210px] w-[170px] md:h-[360px] md:w-[280px]">
-                <NextImage
-                  src="/Absidy.png"
-                  alt="Absidy"
-                  fill
-                  className="object-contain"
-                />
+              <div className="flex w-full items-center justify-center md:justify-end">
+                <div className="relative h-[206px] w-full max-w-[152px] md:h-[304px] md:max-w-[220px]">
+                  <NextImage
+                    src="/Absidy.png"
+                    alt="Absidy"
+                    fill
+                    unoptimized
+                    className="object-contain object-center"
+                  />
+                </div>
               </div>
             </div>
           </div>
