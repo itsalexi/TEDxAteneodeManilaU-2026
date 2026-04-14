@@ -4,72 +4,564 @@
       "id": "logistics",
       "label": "LOGISTICS",
       "members": [
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Co-Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null }
+        {
+          "name": "Elijah Joseph C. POBRE",
+          "role": "OSG Project Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Shaira Trish G. KO",
+          "role": "OT Project Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Althea Luz C. LAVALLE",
+          "role": "OT Project Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Ulrich Roan J. ABCEDE",
+          "role": "Physical Operations Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Andrei Kenzo L. SALONGA",
+          "role": "Physical Operations Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Tiffany C. DUYONGCO",
+          "role": "Physical Operations Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Bianca Alexi S. LEDESMA",
+          "role": "Physical Operations Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Jhon Crist V. JUMAQUIO",
+          "role": "Physical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Manuel Patricio A. SENADOR",
+          "role": "Physical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Kreig McKenzie U. Hung",
+          "role": "Physical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Carlos Gabriel E. REYES",
+          "role": "Physical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Raphael Joachim C. LANDICHO",
+          "role": "Physical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Alexander Mark L. UY",
+          "role": "Technical Operations Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Lance Gabriel U. Alvarez",
+          "role": "Technical Operations Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Dana Elise P. LAPITAN",
+          "role": "Technical Operations Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Joaquin Frederik S. GERONIMO",
+          "role": "Technical Operations Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "John Gabriel Froi A. SABAS",
+          "role": "Technical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Ezekiel Ivan C. AROMIN",
+          "role": "Technical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "David Curtis G. YU",
+          "role": "Technical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Julia Distrajo",
+          "role": "Technical Operations Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Julia Karol D. VALDEZ",
+          "role": "Technical Operations Associate",
+          "imageSrc": null
+        }
       ]
     },
     {
       "id": "adcomm",
       "label": "ADCOMM",
       "members": [
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Co-Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null }
+        {
+          "name": "Juliana S. ZAPANTA",
+          "role": "Creatives Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Audrey Victoria A. RUFINO",
+          "role": "Creatives Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Mikaela Beatrice T. ANDAYA",
+          "role": "Creatives Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Nikka Ann JAMERO",
+          "role": "Creatives Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Princess Angela I. SEXON",
+          "role": "Creatives Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Clyde Anthony S. CHUA",
+          "role": "Creatives Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Zaira Venice M. FARRALES",
+          "role": "Creatives Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Svetlana Viktoria C. ROXAS",
+          "role": "Creatives Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Daniel Aiken C. EDUARDO",
+          "role": "Creatives Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Mar Axel L. DOMINGO",
+          "role": "Creatives Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Rafael Santino M. CAYANONG",
+          "role": "Creatives Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Luis Gabriel R. CUSTODIO",
+          "role": "Creatives Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Nirmala C. SINGGARAN",
+          "role": "Documentation Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Angelo K. PARADO",
+          "role": "Documentation Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Jericho Vin M. RODRIGUEZ",
+          "role": "Documentation Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Maxine Antonia L. YOUNG",
+          "role": "Documentation Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Rheanna Izarra T. TAN",
+          "role": "Documentation Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Rod Isaiah C FERMANTEZ",
+          "role": "Marketing Strategy Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Nathaniel Gabriel D. ESCUETA",
+          "role": "Marketing Strategy Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Sofhia Angelique D. SONIGA",
+          "role": "Marketing Strategy Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Khyle Justine L. AYAP",
+          "role": "Marketing Strategy Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Sofia G. GUEVARA",
+          "role": "Marketing Strategy Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Jheyda Caitlin R. TAN",
+          "role": "Marketing Strategy Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Robelei Edmerlyn A. JAVIER",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Natalia LIAMZON",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Diego Rafael C. Josue",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Patricia Hannah K. Lee",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Carmelo Benedict D. DOLLESIN",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Julienne Arielle M. VISTRO",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Carl Enrique C. DELOS SANTOS",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "GABRIEL ANGELO V. TENG",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Misha Thaddea C. ROQUE",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Tobi Gabriel A. NGAN",
+          "role": "Marketing Strategy Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Anika Danielle C. CASTILLO",
+          "role": "Productions Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Tyrone Patrick C. CHUA",
+          "role": "Productions Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Karmelo P. LAZARO",
+          "role": "Productions Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Paris Allysson May DE VERA",
+          "role": "Productions Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Julianna Marguerite G. LOPEZ",
+          "role": "Productions Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Arabella V. NAVARRO",
+          "role": "Productions Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Kristine Nicole BANZON",
+          "role": "Productions Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Kim Valerie C. Sy",
+          "role": "Productions Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Matteo Rafael P. MERCADO",
+          "role": "Productions Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Akbar Semaj Ioger D. COMEDOY",
+          "role": "Productions Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Amani R. ALONTO",
+          "role": "Productions Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Carl Washington U. SIY",
+          "role": "Website Development Head",
+          "imageSrc": null
+        },
+        {
+          "name": "ALEXI ROTH LUIS A. CANAMO",
+          "role": "Website Development Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "JOHN JEROME PARDO",
+          "role": "Website Development Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Sara Yzabel D. SABANDO",
+          "role": "Website Development Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "RAPHAELLE ABBY U. MONTAYRE",
+          "role": "Website Development Associate",
+          "imageSrc": null
+        }
       ]
     },
     {
       "id": "programs",
       "label": "PROGRAMS",
       "members": [
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Co-Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null }
+        {
+          "name": "Alexia Nicole F. TAN",
+          "role": "Stakeholder Management Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Nathan Andrew P. Ng",
+          "role": "Stakeholder Management Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Patricia Nicole S. BITANGA",
+          "role": "Stakeholder Management Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Jacinda Rae Ania D. NG",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Keene Xander Y. BRIGADO",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Micah Angelie FLORES",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Riyen Bernice O. Ang",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Maria Angelica V. Muñoz",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Alliyah C. RODRIGUEZ",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Gianna Hayley C. RAYMUNDO",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Kayla Francesca D. AMBROCIO",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Sarah Maxine A. LUCERO",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Ashley Janelle R. BARCELONA",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Chloe Nadine D. GO",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Ignacio Rafael H. MORAN",
+          "role": "Stakeholder Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Cathleen Angelica R. UY",
+          "role": "Entertainment Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Charlize Jade D. JANDA",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Alexia Kyra F. ABRIGO",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Jessica Christine S. CARREON",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Zachary P. IGLESIA",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Julianne Frances F. RABAGO",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Arianna Isabel D. REYES",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Lana Sofia B. CERALDE",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Julius Adam Florenz S. ADARLO",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Parris Franz P. CAS",
+          "role": "Entertainment Associate",
+          "imageSrc": null
+        }
       ]
     },
     {
       "id": "pexp",
       "label": "PEXP",
       "members": [
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Co-Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
-        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null }
+        {
+          "name": "Hannah Jelaena S. IMPERIAL",
+          "role": "Participant Management Head",
+          "imageSrc": null
+        },
+        {
+          "name": "Kimi Yzabelle M. GAMO",
+          "role": "Participant Management Deputy",
+          "imageSrc": null
+        },
+        {
+          "name": "Alberto III Matteo R. REYES",
+          "role": "Participant Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Alexandra Nicole D. Ang",
+          "role": "Participant Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Mariam P. VALLES",
+          "role": "Participant Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Althea Barbara S. VASQUEZ",
+          "role": "Participant Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Shadrach Dwyane R. MANLAPAZ",
+          "role": "Participant Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Inigo Lorenzo A. TIROL",
+          "role": "Participant Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Hannah Greah M. MENESES",
+          "role": "Participant Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Jana Sophia A. LIBONGCO",
+          "role": "Talent Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Keith Eurinne R. TULUD",
+          "role": "Talent Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Daniel Benileo C. BANIQUED",
+          "role": "Talent Management Associate",
+          "imageSrc": null
+        },
+        {
+          "name": "Daena Nevaeh B. Agarano",
+          "role": "Talent Management Associate",
+          "imageSrc": null
+        }
       ]
     }
   ]
