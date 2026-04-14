@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const eventDetails = [
-  { icon: "/landing/calendar.svg", text: "26 FEBRUARY 2026" },
-  { icon: "/landing/time.svg", text: "2:00PM → 7:00PM" },
-  { icon: "/landing/location.svg", text: "Arete, ADMU" },
+  { icon: "/landing/calendar.svg", text: "25 APRIL 2026" },
+  { icon: "/landing/time.svg", text: "1:00 PM → 4:00 PM" },
+  { icon: "/landing/location.svg", text: "UP Town Center Cinema 2" },
 ];
 
 export default function LandingSection() {
@@ -83,9 +83,9 @@ export default function LandingSection() {
             />
             <div className="flex flex-col gap-1 text-tedx-muted-text font-sans uppercase"
                  style={{ fontSize: "0.68rem", letterSpacing: "0.12em" }}>
-              <span>26 FEB 2026</span>
-              <span>2:00 — 7:00 PM</span>
-              <span>ARETE · ADMU</span>
+              <span>25 APRIL 2026</span>
+              <span>1:00 — 4:00 PM</span>
+              <span>UP Town Center Cinema 2</span>
             </div>
           </div>
         </div>
